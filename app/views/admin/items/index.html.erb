@@ -7,8 +7,10 @@
       </h1>
       <div class="flex items-center gap-4">
         <%= link_to "Back to Items", items_path, class: "text-sm text-blue-600 hover:text-blue-800" %>
-        <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-sm text-blue-600 hover:text-blue-800" %>
-      </div>
+<%= button_to "Sign Out",
+    destroy_user_session_path,
+    method: :delete,
+    class: "text-sm text-blue-600 hover:text-blue-800 bg-transparent border-0 p-0 cursor-pointer" %>      </div>
     </div>
   </nav>
 
