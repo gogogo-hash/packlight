@@ -1,0 +1,11 @@
+<h2><%= @item.name %></h2>
+
+<p><%= @comment_author.email %> posted a new comment:</p>
+
+<blockquote>
+  <%= @comment.content %>
+</blockquote>
+
+<p>
+  <%= link_to "View item and all comments", item_url(@item) %>
+</p>

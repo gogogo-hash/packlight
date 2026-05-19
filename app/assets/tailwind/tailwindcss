@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles & font families */
+@layer base {
+  html { scroll-behavior: smooth; }
+
+}

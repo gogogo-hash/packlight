@@ -1,0 +1,55 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+  <!-- Navigation -->
+  <nav class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center gap-4">
+      <h1 class="text-4xl font-bold text-slate-800">
+        <%= link_to "Packlight", root_path %>
+      </h1>
+      <div class="flex items-center gap-4">
+        <% if current_user %>
+          <% if current_user.admin? %>
+            <%= link_to "Admin Panel", admin_items_path, class: "text-sm bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+          <% end %>
+          <span class="text-base font-bold text-slate-600"><%= current_user.email %></span>
+          <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-sm text-blue-600 hover:text-blue-800" %>
+        <% end %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    <h2 class="text-3xl font-bold text-slate-800 mb-8">Items</h2>
+
+    <% if @items.any? %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <% @items.each do |item| %>
+          <%= link_to item_path(item), class: "group" do %>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+              <!-- Image -->
+              <div class="w-full h-48 bg-slate-200 flex items-center justify-center overflow-hidden">
+                <% if item.photos.first %>
+                  <img src="data:image/jpeg;base64,<%= Base64.strict_encode64(item.photos.first.image_data) %>"
+                       alt="<%= item.name %>"
+                       class="w-full h-full object-cover group-hover:scale-105 transition">
+                <% else %>
+                  <div class="text-slate-400">No image</div>
+                <% end %>
+              </div>
+
+              <!-- Info -->
+              <div class="p-4">
+                <h3 class="font-semibold text-slate-800 line-clamp-2"><%= item.name %></h3>
+                <p class="text-lg font-bold text-blue-600 mt-2">$<%= number_with_precision(item.price, precision: 2) %></p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <p class="text-slate-600 text-lg">No items available yet.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item: one
+  file_name: MyString
+  image_data: 
+  order: 1
+
+two:
+  item: two
+  file_name: MyString
+  image_data: 
+  order: 1
