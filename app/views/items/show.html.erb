@@ -9,8 +9,10 @@
         <% if current_user.admin? %>
           <%= link_to "Admin", admin_items_path, class: "text-sm text-blue-600 hover:text-blue-800" %>
         <% end %>
-        <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-sm text-blue-600 hover:text-blue-800" %>
-      </div>
+<%= button_to "Sign Out",
+    destroy_user_session_path,
+    method: :delete,
+    class: "text-sm text-blue-600 hover:text-blue-800 bg-transparent border-0 p-0 cursor-pointer" %>      </div>
     </div>
   </nav>
 
