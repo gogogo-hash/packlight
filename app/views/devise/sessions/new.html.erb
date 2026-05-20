@@ -1,26 +1,37 @@
-<h2>Log in</h2>
+<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+    <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Log in</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <!-- Email Field -->
+      <div class="mb-5">
+        <%= f.label :email, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" %>
+      </div>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
-  </div>
+      <!-- Password Field -->
+      <div class="mb-5">
+        <%= f.label :password, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" %>
+      </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me %></p>
-      <p><%= f.label :remember_me %></p>
+      <!-- Remember Me Checkbox -->
+      <% if devise_mapping.rememberable? %>
+        <div class="mb-6 flex items-center">
+          <%= f.check_box :remember_me, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer" %>
+          <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-700 cursor-pointer" %>
+        </div>
+      <% end %>
+
+      <!-- Submit Button -->
+      <div class="mb-6">
+        <%= f.submit "Log in", class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200" %>
+      </div>
+    <% end %>
+
+    <!-- Links Section -->
+    <div class="border-t border-gray-200 pt-6">
+      <%= render "devise/shared/links" %>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
