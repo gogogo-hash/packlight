@@ -19,10 +19,14 @@
       <h2 class="text-3xl font-bold text-slate-800 mb-4">File Server Scan</h2>
       <p class="text-slate-600 mb-6">Scan your file server for new items and process them with Claude AI.</p>
 
-      <%= button_to "Scan File Server Now",
-            admin_scan_path,
+<%= button_to "Scan File Server Now",
+    scan_admin_items_path,
             method: :post,
-            class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %>
+    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %> 
+
+
+
+      
     </div>
 
     <!-- Items Status -->
