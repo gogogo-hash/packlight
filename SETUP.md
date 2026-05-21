@@ -42,6 +42,11 @@ cd /home/coryc/packlight
 # Install gems
 bundle install
 
+# Install PostgreSQL 16
+brew install postgresql@16
+brew services start postgresql@16
+brew services list
+
 # Initialize databases (development & test)
 rails db:create
 rails db:schema:load
@@ -50,6 +55,10 @@ rails db:schema:load
 bundle exec rails generate devise:install
 bundle exec rails generate devise User admin:boolean
 bundle exec rails generate devise_invitable User
+
+
+
+
 
 # Run migrations
 bundle exec rails db:migrate
