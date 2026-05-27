@@ -4,8 +4,6 @@ class Admin::ItemsController < Admin::ApplicationController
   end
 
   def scan
-    
-
       file_source_type = ENV.fetch("FILE_SOURCE_TYPE")
       case file_source_type
       when "local"
@@ -26,7 +24,5 @@ class Admin::ItemsController < Admin::ApplicationController
 
       items_data = scanner.scan_and_create_items
       redirect_to admin_items_path, notice: "Scan started. Processing #{items_data.length} items."
-    
-    
   end
 end
