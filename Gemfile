@@ -48,6 +48,7 @@ gem "devise_invitable"
 
 # AI Integration
 gem "anthropic"
+gem "gemini-ai"
 
 # File Server & Email
 gem "ruby_smb"
@@ -82,3 +83,4 @@ end
 group :development, :test do
   gem "dotenv-rails"
 end
+gem "mini_magick", "~> 5.3"
