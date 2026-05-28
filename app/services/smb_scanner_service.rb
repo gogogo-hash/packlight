@@ -21,7 +21,6 @@ class SmbScannerService
   def scan_and_create_items(share_path = "items")
     begin
       items_data = @adapter.scan_items(share_path)
-
       items_data.each do |item_data|
         create_or_update_item(item_data)
       end
@@ -49,16 +48,21 @@ class SmbScannerService
   end
 
   def create_or_update_item(item_data)
-    item = Item.find_or_create_by(file_folder_path: item_data[:folder_name], name: item_data[:folder_name], description: "Scanned from file source", price: 0.0)
+    item = Item.find_or_create_by(file_folder_path: item_data[:file_folder_path])
+    requires_processing = item.previously_new_record?
 
     item_data[:photos].each do |photo_data|
-      photo = item.photos.find_or_create_by(file_name: photo_data[:file_name])
-      photo.update(
+      photo = item.photos.find_or_initialize_by(file_name: photo_data[:file_name], item_id: item.id)
+      photo.assign_attributes(
         image_data: photo_data[:image_data],
         order: photo_data[:order]
       )
-    end
+      if photo.changed?
+        photo.save
+        requires_processing = true
+      end
+  end
 
-    ProcessItemJob.perform_later(item.id)
+    ProcessItemJob.perform_later(item.id) if requires_processing
   end
 end
