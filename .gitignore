@@ -9,6 +9,7 @@
 
 # Ignore all environment files.
 /.env*
+/gen-lang-client-0677189465-4e8a9ac5b341.json
 
 # Ignore all logfiles and tempfiles.
 /log/*

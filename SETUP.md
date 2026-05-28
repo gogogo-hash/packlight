@@ -68,6 +68,8 @@ bundle exec rails generate model Item name:string description:text price:decimal
 bundle exec rails generate model Photo item:references file_name:string image_data:binary order:integer
 bundle exec rails generate model Comment item:references user:references content:text
 bundle exec rails generate model Subscription subscribable:references{polymorphic} user:references
+bundle exec rails generate model ValidImageType image_type:string
+
 
 # Run all migrations
 bundle exec rails db:migrate

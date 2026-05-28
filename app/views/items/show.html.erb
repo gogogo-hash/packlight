@@ -84,6 +84,7 @@
             <% else %>
               <%= button_to "Subscribe to comments",
                     item_subscriptions_path(@item),
+                    method: :create,
                     class: "w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700" %>
             <% end %>
           </div>
