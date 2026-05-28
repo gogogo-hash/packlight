@@ -40,7 +40,7 @@
           <table class="w-full">
             <thead class="bg-slate-50 border-b">
               <tr>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Name</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">File Folder Path</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Status</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Last Scanned</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Price</th>
@@ -50,7 +50,7 @@
               <% @items.each do |item| %>
                 <tr class="border-b hover:bg-slate-50">
                   <td class="px-6 py-4 text-slate-800 font-medium">
-                    <%= link_to item.name, item_path(item), class: "text-blue-600 hover:text-blue-800" %>
+                    <%= link_to item.file_folder_path[item.file_folder_path.rindex('/')..-1], item_path(item), class: "text-blue-600 hover:text-blue-800" %>
                   </td>
                   <td class="px-6 py-4">
                     <% case item.status %>
