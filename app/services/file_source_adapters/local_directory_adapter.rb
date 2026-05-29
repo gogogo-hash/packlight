@@ -7,7 +7,6 @@ module FileSourceAdapters
 
     def scan_items(share_path = "items")
       items = []
-      existing_folders = Set.new(Item.pluck(:file_folder_path))
       existing_photos = Set.new(
         Item.joins(:photos).pluck("items.file_folder_path", "photos.file_name").map { |f, p| File.join(f, p) }
       )
