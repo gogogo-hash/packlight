@@ -17,27 +17,27 @@ production:
   primary:
     <<: *default
     database: packlight_production
-    host: <%= ENV.fetch("DB_HOST") %>
-    username: <%= ENV.fetch("DB_USERNAME") %>
-    password: <%= ENV.fetch("DB_PASSWORD") %>
+    host: <%= ENV.fetch("DB_HOST", "") %>
+    username: <%= ENV.fetch("DB_USERNAME", "") %>
+    password: <%= ENV.fetch("DB_PASSWORD", "") %>
   cache:
     <<: *default
     database: packlight_cache
-    host: <%= ENV.fetch("DB_HOST") %>
-    username: <%= ENV.fetch("DB_USERNAME") %>
-    password: <%= ENV.fetch("DB_PASSWORD") %>
+    host: <%= ENV.fetch("DB_HOST", "") %>
+    username: <%= ENV.fetch("DB_USERNAME", "") %>
+    password: <%= ENV.fetch("DB_PASSWORD", "") %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
     database: packlight_queue
-    host: <%= ENV.fetch("DB_HOST") %>
-    username: <%= ENV.fetch("DB_USERNAME") %>
-    password: <%= ENV.fetch("DB_PASSWORD") %>
+    host: <%= ENV.fetch("DB_HOST", "") %>
+    username: <%= ENV.fetch("DB_USERNAME", "") %>
+    password: <%= ENV.fetch("DB_PASSWORD", "") %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
     database: packlight_cable
-    host: <%= ENV.fetch("DB_HOST") %>
-    username: <%= ENV.fetch("DB_USERNAME") %>
-    password: <%= ENV.fetch("DB_PASSWORD") %>
+    host: <%= ENV.fetch("DB_HOST", "") %>
+    username: <%= ENV.fetch("DB_USERNAME", "") %>
+    password: <%= ENV.fetch("DB_PASSWORD", "") %>
     migrations_paths: db/cable_migrate
