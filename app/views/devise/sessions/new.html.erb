@@ -3,6 +3,8 @@
     <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Packlight</h2>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      
+
       <!-- Email Field -->
       <div class="mb-5">
         <%= f.label :email, class: "block text-sm font-medium text-gray-700 mb-2" %>
@@ -22,6 +24,9 @@
           <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-700 cursor-pointer" %>
         </div>
       <% end %>
+
+
+   
 
       <!-- Submit Button -->
       <div class="mb-6">
