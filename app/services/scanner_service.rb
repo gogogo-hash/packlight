@@ -1,18 +1,19 @@
-class SmbScannerService
+class ScannerService
   VALID_FILE_SOURCES = %w[local smb google_drive].freeze
 
-  def initialize(file_source_type_or_host, file_source_path_or_username = nil, smb_password = nil)
+  def initialize(file_source_type, file_source_path = nil, user = nil, smb_password = nil)
     # Support both old and new initialization
-    if file_source_type_or_host.in?(VALID_FILE_SOURCES)
+    if file_source_type.in?(VALID_FILE_SOURCES)
       # New adapter-based initialization
-      @file_source_type = file_source_type_or_host
-      @file_source_path = file_source_path_or_username
+      @file_source_type = file_source_type
+      @file_source_path = file_source_path
+      @user = user
       @adapter = create_adapter
     else
       # Legacy SMB initialization (backward compatibility)
       @file_source_type = "smb"
-      @smb_host = file_source_type_or_host
-      @smb_username = file_source_path_or_username
+      @smb_host = file_source_type
+      @smb_username = file_source_path
       @smb_password = smb_password
       @adapter = FileSourceAdapters::SmbAdapter.new(@smb_host, @smb_username, @smb_password)
     end
@@ -20,7 +21,7 @@ class SmbScannerService
 
   def scan_and_create_items(share_path = "items")
     begin
-      items_data = @adapter.scan_items(share_path)
+      items_data = @adapter.scan_items
       items_data.each do |item_data|
         create_or_update_item(item_data)
       end
@@ -41,7 +42,7 @@ class SmbScannerService
     when "smb"
       raise ArgumentError, "SMB adapter not yet available. Please use file_source_type='local' for testing."
     when "google_drive"
-      raise ArgumentError, "Google Drive adapter not yet available. Please use file_source_type='local' for testing."
+      FileSourceAdapters::GoogleDriveAdapter.new(@user)
     else
       raise ArgumentError, "Unknown file source type: #{@file_source_type}. Valid types: #{VALID_FILE_SOURCES.join(', ')}"
     end

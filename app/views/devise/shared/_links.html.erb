@@ -3,6 +3,19 @@
     <div><%= link_to "Log in", new_session_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
   <% end %>
 
+  <%- if devise_mapping.omniauthable? %>
+  <%- resource_class.omniauth_providers.each do |provider| %>
+    <% display_name = provider.to_s.gsub('_oauth2', '').titleize %>
+
+    <div class="mt-4">
+      <%= button_to "Sign in with #{display_name}", 
+                    omniauth_authorize_path(resource_name, provider), 
+                    method: :post,
+                    data: { turbo: false }, 
+                    class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-center cursor-pointer block" %>
+    </div>
+  <% end %>
+
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
     <div><%= link_to "Sign up", new_registration_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
   <% end %>
@@ -19,9 +32,6 @@
     <div><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
   <% end %>
 
-  <%- if devise_mapping.omniauthable? %>
-    <%- resource_class.omniauth_providers.each do |provider| %>
-      <div><%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition text-sm" %></div>
-    <% end %>
-  <% end %>
+ 
+<% end %>
 </div>

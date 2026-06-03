@@ -4,20 +4,20 @@ class Admin::ItemsController < Admin::ApplicationController
   end
 
   def scan
-      file_source_type = ENV.fetch("FILE_SOURCE_TYPE")
+      file_source_type = params[:file_source_type]
+      user             = params[:user_id]
       case file_source_type
       when "local"
         file_source_path = ENV.fetch("FILE_SOURCE_PATH")
-        scanner = SmbScannerService.new(file_source_type, file_source_path)
+        scanner = ScannerService.new(file_source_type, file_source_path)
       when "smb"
 
         smb_host = ENV.fetch("SMB_HOST")
         smb_username = ENV.fetch("SMB_USERNAME", nil)
         smb_password = ENV.fetch("SMB_PASSWORD", nil)
-        scanner = SmbScannerService.new(smb_host, smb_username, smb_password)
+        scanner = ScannerService.new(smb_host, smb_username, smb_password)
       when "google_drive"
-        google_drive_folder_id = ENV.fetch("GOOGLE_DRIVE_FOLDER_ID")
-        scanner = SmbScannerService.new(file_source_type, google_drive_folder_id)
+        scanner = ScannerService.new(file_source_type, nil, user)
       else
         raise ArgumentError, "Unknown FILE_SOURCE_TYPE: #{file_source_type}"
       end

@@ -22,6 +22,7 @@
 <%= button_to "Scan File Server Now",
     scan_admin_items_path,
             method: :post,
+            params: { file_source_type: "google_drive", user_id: current_user.id },
     class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %> 
 
 
