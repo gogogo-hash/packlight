@@ -93,3 +93,5 @@ group :development, :test do
   gem "dotenv-rails"
 end
 gem "mini_magick", "~> 5.3"
+
+gem "foreman", group: :production
