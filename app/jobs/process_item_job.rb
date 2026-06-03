@@ -4,27 +4,27 @@ class ProcessItemJob < ApplicationJob
   def perform(item_id)
     item = Item.find(item_id)
     item.update(status: "pending")
-
+    key_file = nil
     begin
       # Gather all photos for this item
       photos = item.photos.order(:order)
       return if photos.empty?
 
-      # Create Gemini client and fetch prompt. Save for later. We might want to switch to free-tier for demos
-      # client = Gemini.new(
-      #   credentials: {
-      #     service: "generative-language-api",
-      #     api_key: ENV["GEMINI_API_KEY"]
-      #   },
-      #   options: { model: "gemini-2.5-flash" }
-      # )
+      if ENV["GOOGLE_CREDENTIALS_JSON"].present?
+              key_file = Tempfile.new(["google-key", ".json"])
+              key_file.write(ENV["GOOGLE_CREDENTIALS_JSON"])
+              key_file.rewind
+              credentials_path = key_file.path
+      else
+        credentials_path = Rails.root.join("gen-lang-client-0677189465-4e8a9ac5b341.json").to_s
+      end
 
       client = Gemini.new(
           credentials: {
             service: "vertex-ai-api",
             project_id: ENV["GCP_PROJECT_ID"],
             region: "us-central1",
-            file_path: "gen-lang-client-0677189465-4e8a9ac5b341.json"
+            file_path: credentials_path
           },
           options: {
             model: "gemini-2.5-flash-lite"
@@ -82,6 +82,13 @@ class ProcessItemJob < ApplicationJob
       item.update(status: "error")
       Rails.logger.error("Error processing item #{item.id}: #{e.message}")
       raise
+    ensure
+      # Safely close and remove the temporary file from the container disk if it was created
+      if key_file
+        key_file.close
+        key_file.unlink
+      end
+
     end
   end
 
