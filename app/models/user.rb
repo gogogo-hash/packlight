@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable,
-         :lockable, :timeoutable, 
+         :recoverable, :rememberable, :validatable,
+         :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
   has_many :comments, dependent: :destroy
@@ -15,7 +15,6 @@ class User < ApplicationRecord
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
         user.email = auth.info.email
         user.password = Devise.friendly_token[0, 20]
-        user.skip_confirmation! 
       end.tap do |user|
         user.google_token = auth.credentials.token
         if auth.credentials.refresh_token.present?
@@ -25,13 +24,4 @@ class User < ApplicationRecord
         user.save
       end
   end
-
-  def active_for_authentication?
-    super && confirmed?
-  end
-
-  def inactive_message
-    confirmed? ? super : :unconfirmed
-  end
-
 end
