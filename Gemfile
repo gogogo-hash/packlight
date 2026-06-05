@@ -95,3 +95,5 @@ end
 gem "mini_magick", "~> 5.3"
 
 gem "foreman", group: :production
+
+gem "cloudflare-turnstile-rails"
