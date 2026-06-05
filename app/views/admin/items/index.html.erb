@@ -15,15 +15,50 @@
   </nav>
 
   <div class="max-w-7xl mx-auto px-4 py-12">
+
+    
+
+
     <div class="mb-8">
       <h2 class="text-3xl font-bold text-slate-800 mb-4">File Server Scan</h2>
-      <p class="text-slate-600 mb-6">Scan your file server for new items and process them with Claude AI.</p>
+      <p class="text-slate-600 mb-6">Scan your file server for new items and process them with Gemini AI.</p>
 
-<%= button_to "Scan File Server Now",
+<div class="flex flex-col gap-4 max-w-xs">
+  <%= button_to "Connect Google Drive", 
+                user_google_oauth2_omniauth_authorize_path(
+                  scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
+                  prompt: "consent", 
+                  access_type: "offline"
+                ), 
+                method: :post, 
+                data: { turbo: false }, 
+                class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
+
+  <%= button_to "Scan Google Drive Now",
+                scan_admin_items_path,
+                method: :post,
+                params: { file_source_type: "google_drive", user_id: current_user.id },
+                class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
+</div>
+
+
+
+<%# 
+<%= button_to "Connect Google Drive", 
+              user_google_oauth2_omniauth_authorize_path(
+                scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
+                prompt: "consent", 
+                access_type: "offline"
+              ), 
+              method: :post, 
+              data: { turbo: false }, 
+    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %> 
+
+<%# <%= button_to "Scan Google Drive Now",
     scan_admin_items_path,
             method: :post,
             params: { file_source_type: "google_drive", user_id: current_user.id },
-    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %> 
+    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %>  
 
 
 

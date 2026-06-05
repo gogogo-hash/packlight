@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_04_210917) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_05_063753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -184,6 +184,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_210917) do
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "google_drive_refresh_token"
+    t.string "google_drive_token"
     t.string "google_refresh_token"
     t.string "google_token"
     t.integer "google_token_expires_at"
@@ -195,6 +198,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_210917) do
     t.integer "invitations_count", default: 0
     t.bigint "invited_by_id"
     t.string "invited_by_type"
+    t.datetime "locked_at"
     t.string "provider"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
@@ -202,6 +206,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_210917) do
     t.string "target_google_folder_id"
     t.string "uid"
     t.string "unconfirmed_email"
+    t.string "unlock_token"
     t.datetime "updated_at", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -209,6 +214,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_210917) do
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
   create_table "valid_image_types", force: :cascade do |t|
