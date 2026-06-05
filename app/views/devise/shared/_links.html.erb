@@ -24,12 +24,16 @@
     <div><%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
   <% end %>
 
-  <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-    <div><%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+    <% if resource.errors.any? || flash[:alert].present? || flash[:error].present? %>
+      <div><%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+    <% end %>
   <% end %>
 
   <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-    <div><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+    <% if resource.errors.any? || flash[:alert].present? || flash[:error].present? %>
+      <div><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+    <% end %>
   <% end %>
 
  
