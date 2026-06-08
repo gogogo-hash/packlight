@@ -3,6 +3,14 @@ class Admin::ItemsController < Admin::ApplicationController
     @items = Item.all.order(last_scanned_at: :desc)
   end
 
+  def update_google_folder
+    if current_user.update(target_google_folder_id: params[:folder_id])
+      render json: { success: true, folder_name: params[:folder_name] }, status: :ok
+    else
+      render json: { success: false, errors: current_user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def scan
       file_source_type = params[:file_source_type]
       user             = params[:user_id]

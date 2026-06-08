@@ -26,7 +26,7 @@
 <div class="flex flex-col gap-4 max-w-xs">
   <%= button_to "Connect Google Drive", 
                 user_google_oauth2_omniauth_authorize_path(
-                  scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
+                  scope: "email,profile,https://www.googleapis.com/auth/drive.file", 
                   prompt: "consent", 
                   access_type: "offline"
                 ), 
@@ -34,35 +34,97 @@
                 data: { turbo: false }, 
                 class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
 
+  <!-- Button to trigger the picker once connected -->
+<% if current_user.google_drive_token.present? %>
+  <button id="picker-button" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700">
+    Select Target Drive Folder
+  </button>
+<% end %>
+
+<script async defer src="https://apis.google.com/js/api.js"></script>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const pickerBtn = document.getElementById('picker-button');
+    if (!pickerBtn) return; // Prevent errors if the button isn't rendered on the page
+
+    const developerKey = "<%= ENV['GOOGLE_API_KEY'] %>"; 
+    const appId = "<%= ENV['GOOGLE_APP_ID'] %>"; 
+    const oauthToken = "<%= current_user.google_drive_token %>";
+
+    pickerBtn.addEventListener('click', () => {
+      if (typeof gapi !== 'undefined') {
+        gapi.load('picker', { 'callback': createPicker });
+      } else {
+        alert("Google API library hasn't loaded yet. Please refresh.");
+      }
+    });
+
+    function createPicker() {
+      const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
+        .setSelectFolderEnabled(true)
+        .setMimeTypes('application/vnd.google-apps.folder');
+
+      const picker = new google.picker.PickerBuilder()
+        .enableFeature(google.picker.Feature.NAV_HIDDEN)
+        .setDeveloperKey(developerKey)
+        .setAppId(appId)
+        .setOAuthToken(oauthToken)
+        .addView(view)
+        .setCallback(pickerCallback)
+        .build();
+
+      picker.setVisible(true);
+    }
+
+    function pickerCallback(data) {
+      if (data.action === google.picker.Action.PICKED) {
+        const doc = data.docs[0];
+        const folderId = doc.id;
+        const folderName = doc.name;
+
+        console.log(`User picked folder: ${folderName} (ID: ${folderId})`);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        fetch('/admin/items/update_google_folder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+          },
+          body: JSON.stringify({
+            folder_id: folderId,
+            folder_name: folderName
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert(`Target locked! Successfully mapped folder: ${data.folder_name}`);
+            window.location.reload();
+          } else {
+            alert(`Failed to save folder configurations: ${data.errors.join(", ")}`);
+          }
+        })
+        .catch(error => {
+          console.error("Error updating folder:", error);
+          alert("An error occurred while connecting the folder to the database.");
+        });
+
+      }
+    }
+  });
+</script>
+
+  
+  
   <%= button_to "Scan Google Drive Now",
                 scan_admin_items_path,
                 method: :post,
                 params: { file_source_type: "google_drive", user_id: current_user.id },
                 class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
 </div>
-
-
-
-<%# 
-<%= button_to "Connect Google Drive", 
-              user_google_oauth2_omniauth_authorize_path(
-                scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
-                prompt: "consent", 
-                access_type: "offline"
-              ), 
-              method: :post, 
-              data: { turbo: false }, 
-    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %> 
-
-<%# <%= button_to "Scan Google Drive Now",
-    scan_admin_items_path,
-            method: :post,
-            params: { file_source_type: "google_drive", user_id: current_user.id },
-    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %>  
-
-
-
-      
+    
     </div>
 
     <!-- Items Status -->

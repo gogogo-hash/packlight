@@ -21,16 +21,18 @@ module FileSourceAdapters
           subfolders_query = "'#{@user.target_google_folder_id}' in parents and " \
                       "mimeType = 'application/vnd.google-apps.folder' and " \
                       "trashed = false"
+debugger
+          photo = @drive_service.get_file(@user.target_google_folder_id, fields: "id, name")
 
-          subfolders = @drive_service.list_files(
-            q: subfolders_query,
-            fields: "files(id, name)"
-          ).files.sort_by(&:name)
+          # subfolders = @drive_service.list_files(
+          #   q: subfolders_query,
+          #   fields: "files(id, name)"
+          # ).files.sort_by(&:name)
 
           subfolders.each do |subfolder|
             folder_name = subfolder.name
             folder_id   = subfolder.id
-
+debugger
             # 3. Look for photos specifically inside this subfolder ID
             photos = list_photos_in_google_folder(folder_id, folder_name, existing_photos)
 

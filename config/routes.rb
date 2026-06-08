@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :items, only: [ :index ] do
       collection do
         post :scan
+        post :update_google_folder
       end
     end
   end
