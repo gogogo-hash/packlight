@@ -1,32 +1,31 @@
 module FileSourceAdapters
   class GoogleDriveAdapter
-    def initialize(user)
+    def initialize(user, _path = nil)
         @user = User.find_by(id: user)
         @drive_service = Google::Apis::DriveV3::DriveService.new
         @drive_service.authorization = user_credentials
+        @target_folder_id = _path
     end
 
     def list_files
-      return unless @user.target_google_folder_id.present?
-      query = "'#{@user.target_google_folder_id}' in parents and trashed = false"
+      return unless @target_folder_id.present
+      query = "'#{@target_folder_id}' in parents and trashed = false"
     end
 
     def scan_items
-          return [] unless @user.target_google_folder_id.present?
+          return [] unless @target_folder_id.present?
           items = []
           existing_photos = Set.new(
             Item.joins(:photos).pluck("items.file_folder_path", "photos.file_name").map { |f, p| File.join(f, p) }
           )
 
-          subfolders_query = "'#{@user.target_google_folder_id}' in parents and " \
+          subfolders_query = "'#{@target_folder_id}' in parents and " \
                       "mimeType = 'application/vnd.google-apps.folder' and " \
                       "trashed = false"
-
           subfolders = @drive_service.list_files(
             q: subfolders_query,
             fields: "files(id, name)"
           ).files.sort_by(&:name)
-
           subfolders.each do |subfolder|
             folder_name = subfolder.name
             folder_id   = subfolder.id
@@ -51,16 +50,15 @@ module FileSourceAdapters
         client_id: ENV["GOOGLE_CLIENT_ID"],
         client_secret: ENV["GOOGLE_CLIENT_SECRET"],
         token_credential_uri: "https://oauth2.googleapis.com/token",
-        access_token: @user.google_token,
-        refresh_token: @user.google_refresh_token,
-        expires_at: @user.google_token_expires_at
+        access_token: @user.google_drive_token,
+        refresh_token: @user.google_drive_refresh_token,
+        expires_at: @user.google_drive_token_expires_at
       )
-
       if auth.expired?
         auth.refresh!
         @user.update(
-          google_token: auth.access_token,
-          google_token_expires_at: auth.expires_at.to_i
+          google_drive_token: auth.access_token,
+          google_drive_token_expires_at: auth.expires_at.to_i
         )
       end
 
@@ -68,8 +66,6 @@ module FileSourceAdapters
     end
 
     def list_photos_in_google_folder(folder_id, folder_name, existing_photos)
-      # debugger
-
       photos = []
       order = 0
       max_size_bytes = 2 * 1024 * 1024 # 2 MB in bytes, TODO: Compress large photos before saving to DB.

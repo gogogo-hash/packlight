@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_05_192554) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_08_221740) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -184,6 +184,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_05_192554) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "google_drive_refresh_token"
     t.string "google_drive_token"
+    t.integer "google_drive_token_expires_at"
     t.string "google_refresh_token"
     t.string "google_token"
     t.integer "google_token_expires_at"
