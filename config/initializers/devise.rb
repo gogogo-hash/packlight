@@ -328,7 +328,7 @@ Devise.setup do |config|
                 ENV["GOOGLE_CLIENT_SECRET"],
                 {
                     scope: "email,profile",
-                    prompt: "consent",
+                    prompt: "select_account",
                     access_type: "online"
                   }
                 end

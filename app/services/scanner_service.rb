@@ -42,7 +42,7 @@ class ScannerService
     when "smb"
       raise ArgumentError, "SMB adapter not yet available. Please use file_source_type='local' for testing."
     when "google_drive"
-      FileSourceAdapters::GoogleDriveAdapter.new(@user)
+      FileSourceAdapters::GoogleDriveAdapter.new(@user, @file_source_path)
     else
       raise ArgumentError, "Unknown file source type: #{@file_source_type}. Valid types: #{VALID_FILE_SOURCES.join(', ')}"
     end

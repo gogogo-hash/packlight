@@ -25,20 +25,40 @@
 
 <div class="flex flex-col gap-4 max-w-xs">
   <%= button_to "Connect Google Drive", 
-                user_google_oauth2_omniauth_authorize_path(
-                  scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
-                  prompt: "consent", 
-                  access_type: "offline"
-                ), 
-                method: :post, 
+                 admin_google_drive_connect_path,
+
+                #(
+                #   scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
+                #   prompt: "consent", 
+                #   access_type: "offline",
+                #   include_granted_scopes: true
+                # ), 
+                method: :get,
                 data: { turbo: false }, 
                 class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
 
-  <%= button_to "Scan Google Drive Now",
-                scan_admin_items_path,
-                method: :post,
-                params: { file_source_type: "google_drive", user_id: current_user.id },
-                class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
+
+
+
+
+         <%= form_with url: scan_admin_items_path, method: :post, local: true, class: "flex flex-col gap-4 max-w-xs" do |f| %>
+  <%= hidden_field_tag :file_source_type, "google_drive" %>
+  <%= hidden_field_tag :user_id, current_user.id %>
+
+  <div class="w-full">
+    <%= text_field_tag :file_source_path, nil, 
+                       placeholder: "Enter Google Folder ID", 
+                       class: "w-full bg-white text-slate-800 placeholder:text-slate-500 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 rounded" %>  
+  </div>
+
+  <%= f.submit "Scan Google Drive Now", 
+               class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 cursor-pointer" %> 
+<% end %>
+
+
+
+
+
 </div>
 
 
