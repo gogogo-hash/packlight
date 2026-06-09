@@ -1,12 +1,13 @@
 <div class="space-y-3">
   <%- if controller_name != 'sessions' %>
-    <div><%= link_to "Log in", new_session_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+    <div><%= link_to "Log in", new_session_path(resource_name), class: "w-full bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200 text-center block" %>
+    </div>
   <% end %>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
   <div class="mt-4">
     <%= link_to new_registration_path(resource_name), 
-                class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-center cursor-pointer block" do %>
+                class: "w-full bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200 text-center cursor-pointer block" do %>
       Sign up
     <% end %>
   </div>
@@ -21,11 +22,14 @@
                       omniauth_authorize_path(resource_name, provider), 
                       method: :post,
                       data: { turbo: false }, 
-                      class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-center cursor-pointer block" %>
+                      class: "w-full bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200 text-center cursor-pointer block" %>
       </div>
   <% end %>
 
-
+    <!-- The Cloudflare Turnstile Widget -->
+    <div class="form-group verification-gate flex justify-center mt-10">
+      <%= cloudflare_turnstile_tag(appearance: 'execute') %>
+    </div>
 
 
         <% if false %>

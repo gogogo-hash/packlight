@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+<div class="min-h-screen">
   <!-- Navigation -->
   <nav class="bg-white shadow">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center gap-4">
@@ -11,10 +11,11 @@
             <%= link_to "Admin Panel", admin_items_path, class: "text-sm bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
           <% end %>
           <span class="text-base font-bold text-slate-600"><%= current_user.email %></span>
-<%= button_to "Sign Out",
+  <%= button_to "Sign Out",
     destroy_user_session_path,
     method: :delete,
-    class: "text-sm text-blue-600 hover:text-blue-800 bg-transparent border-0 p-0 cursor-pointer" %>        <% end %>
+    class: "text-sm text-blue-600 hover:text-blue-800 bg-transparent border-0 p-0 cursor-pointer" %>        
+    <% end %>
       </div>
     </div>
   </nav>
