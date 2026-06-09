@@ -1,149 +1,111 @@
 <div class="min-h-screen bg-slate-50">
+  
+  
   <!-- Navigation -->
   <nav class="bg-white shadow">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-slate-800">
-        <%= link_to "Packlight Admin", admin_items_path %>
-      </h1>
-      <div class="flex items-center gap-4">
-        <%= link_to "Back to Items", items_path, class: "text-sm text-blue-600 hover:text-blue-800" %>
-<%= button_to "Sign Out",
-    destroy_user_session_path,
-    method: :delete,
-    class: "text-sm text-blue-600 hover:text-blue-800 bg-transparent border-0 p-0 cursor-pointer" %>      </div>
+        <h1 class="text-2xl font-bold text-slate-800">
+          <%= link_to "Packlight Admin", admin_items_path %>
+        </h1>
+        <div class="flex items-center gap-4">
+          <%= link_to "Back to Items", items_path, class: "text-sm text-blue-600 hover:text-blue-800" %>
+          <%= button_to "Sign Out",
+            destroy_user_session_path,
+            method: :delete,
+            class: "text-sm text-blue-600 hover:text-blue-800 bg-transparent border-0 p-0 cursor-pointer" %>      
+        </div>
     </div>
   </nav>
 
   <div class="max-w-7xl mx-auto px-4 py-12">
-
-    
-
-
     <div class="mb-8">
       <h2 class="text-3xl font-bold text-slate-800 mb-4">File Server Scan</h2>
       <p class="text-slate-600 mb-6">Scan your file server for new items and process them with Gemini AI.</p>
 
-<div class="flex flex-col gap-4 max-w-xs">
-  <%= button_to "Connect Google Drive", 
-                 admin_google_drive_connect_path,
+      <div class="flex flex-col gap-4 max-w-xs">
+        <%= button_to "Connect Google Drive", 
+                      admin_google_drive_connect_path,
+                      method: :get,
+                      data: { turbo: false }, 
+                      class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
 
-                #(
-                #   scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
-                #   prompt: "consent", 
-                #   access_type: "offline",
-                #   include_granted_scopes: true
-                # ), 
-                method: :get,
-                data: { turbo: false }, 
-                class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700" %> 
+          <%= form_with url: scan_admin_items_path, method: :post, local: true, class: "flex flex-col gap-4 max-w-xs" do |f| %>
+          <%= hidden_field_tag :file_source_type, "google_drive" %>
+          <%= hidden_field_tag :user_id, current_user.id %>
 
+        <div class="w-full">
+          <%= text_field_tag :file_source_path, nil, 
+                        placeholder: "Enter Google Folder ID", 
+                        class: "w-full bg-white text-slate-800 placeholder:text-slate-500 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 rounded" %>  
+        </div>
 
+        <%= f.submit "Scan Google Drive Now", 
+                class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 cursor-pointer" %> 
+        <% end %>
 
-
-
-         <%= form_with url: scan_admin_items_path, method: :post, local: true, class: "flex flex-col gap-4 max-w-xs" do |f| %>
-  <%= hidden_field_tag :file_source_type, "google_drive" %>
-  <%= hidden_field_tag :user_id, current_user.id %>
-
-  <div class="w-full">
-    <%= text_field_tag :file_source_path, nil, 
-                       placeholder: "Enter Google Folder ID", 
-                       class: "w-full bg-white text-slate-800 placeholder:text-slate-500 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 rounded" %>  
-  </div>
-
-  <%= f.submit "Scan Google Drive Now", 
-               class: "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 cursor-pointer" %> 
-<% end %>
-
-
-
-
-
-</div>
-
-
-
-<%# 
-<%= button_to "Connect Google Drive", 
-              user_google_oauth2_omniauth_authorize_path(
-                scope: "email,profile,https://www.googleapis.com/auth/drive.readonly", 
-                prompt: "consent", 
-                access_type: "offline"
-              ), 
-              method: :post, 
-              data: { turbo: false }, 
-    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %> 
-
-<%# <%= button_to "Scan Google Drive Now",
-    scan_admin_items_path,
-            method: :post,
-            params: { file_source_type: "google_drive", user_id: current_user.id },
-    class: "bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700"  %>  
-
-
-
+      </div>
       
     </div>
 
-    <!-- Items Status -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-      <div class="px-6 py-4 border-b border-slate-200">
-        <h3 class="text-lg font-semibold text-slate-800">Items Status</h3>
-      </div>
+      <!-- Items Status -->
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200">
+          <h3 class="text-lg font-semibold text-slate-800">Items Status</h3>
+        </div>
 
-      <% if @items.any? %>
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-slate-50 border-b">
-              <tr>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">File Folder Path</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Status</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Last Scanned</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @items.each do |item| %>
-                <tr class="border-b hover:bg-slate-50">
-                  <td class="px-6 py-4 text-slate-800 font-medium">
-                    <%= link_to item.file_folder_path[item.file_folder_path.rindex('/')..-1], item_path(item), class: "text-blue-600 hover:text-blue-800" %>
-                  </td>
-                  <td class="px-6 py-4">
-                    <% case item.status %>
-                      <% when "processed" %>
-                        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">Processed</span>
-                      <% when "pending" %>
-                        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">Pending</span>
-                      <% when "error" %>
-                        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800">Error</span>
-                      <% else %>
-                        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-slate-100 text-slate-800">Unknown</span>
-                    <% end %>
-                  </td>
-                  <td class="px-6 py-4 text-slate-600">
-                    <% if item.last_scanned_at %>
-                      <%= time_ago_in_words(item.last_scanned_at) %> ago
-                    <% else %>
-                      Never
-                    <% end %>
-                  </td>
-                  <td class="px-6 py-4 text-slate-800">
-                    <% if item.price %>
-                      $<%= number_with_precision(item.price, precision: 2) %>
-                    <% else %>
-                      —
-                    <% end %>
-                  </td>
+        <% if @items.any? %>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-slate-50 border-b">
+                <tr>
+                  <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">File Folder Path</th>
+                  <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Status</th>
+                  <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Last Scanned</th>
+                  <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Price</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <div class="px-6 py-12 text-center text-slate-500">
-          No items yet. Click "Scan File Server Now" to get started.
-        </div>
-      <% end %>
-    </div>
+              </thead>
+              <tbody>
+                <% @items.each do |item| %>
+                  <tr class="border-b hover:bg-slate-50">
+                    <td class="px-6 py-4 text-slate-800 font-medium">
+                      <%= link_to item.file_folder_path[item.file_folder_path.rindex('/')..-1], item_path(item), class: "text-blue-600 hover:text-blue-800" %>
+                    </td>
+                    <td class="px-6 py-4">
+                      <% case item.status %>
+                        <% when "processed" %>
+                          <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">Processed</span>
+                        <% when "pending" %>
+                          <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">Pending</span>
+                        <% when "error" %>
+                          <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800">Error</span>
+                        <% else %>
+                          <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-slate-100 text-slate-800">Unknown</span>
+                      <% end %>
+                    </td>
+                    <td class="px-6 py-4 text-slate-600">
+                      <% if item.last_scanned_at %>
+                        <%= time_ago_in_words(item.last_scanned_at) %> ago
+                      <% else %>
+                        Never
+                      <% end %>
+                    </td>
+                    <td class="px-6 py-4 text-slate-800">
+                      <% if item.price %>
+                        $<%= number_with_precision(item.price, precision: 2) %>
+                      <% else %>
+                        —
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class="px-6 py-12 text-center text-slate-500">
+            No items yet. Click "Scan File Server Now" to get started.
+          </div>
+        <% end %>
+      </div>
   </div>
 </div>
