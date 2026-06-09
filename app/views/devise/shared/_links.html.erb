@@ -3,41 +3,51 @@
     <div><%= link_to "Log in", new_session_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
   <% end %>
 
-  <%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-    <% display_name = provider.to_s.gsub('_oauth2', '').titleize %>
-
-    <div class="mt-4">
-      <%= button_to "Sign in with #{display_name}", 
-                    omniauth_authorize_path(resource_name, provider), 
-                    method: :post,
-                    data: { turbo: false }, 
-                    class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-center cursor-pointer block" %>
-    </div>
-  <% end %>
-
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-    <div><%= link_to "Sign up", new_registration_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
-  <% end %>
-
-  <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-    <div><%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
-  <% end %>
-
-<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-    <% if resource.errors.any? || flash[:alert].present? || flash[:error].present? %>
-      <div><%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+  <div class="mt-4">
+    <%= link_to new_registration_path(resource_name), 
+                class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-center cursor-pointer block" do %>
+      Sign up
     <% end %>
-  <% end %>
-
-  <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-    <% if resource.errors.any? || flash[:alert].present? || flash[:error].present? %>
-      <div><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
-    <% end %>
-  <% end %>
-
-  
-
- 
+  </div>
 <% end %>
+
+  <%- if devise_mapping.omniauthable? %>
+    <%- resource_class.omniauth_providers.each do |provider| %>
+      <% display_name = provider.to_s.gsub('_oauth2', '').titleize %>
+
+      <div class="mt-4">
+        <%= button_to "Sign in with #{display_name}", 
+                      omniauth_authorize_path(resource_name, provider), 
+                      method: :post,
+                      data: { turbo: false }, 
+                      class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-center cursor-pointer block" %>
+      </div>
+  <% end %>
+
+
+
+
+        <% if false %>
+
+              <%# Disabled currently out of scope for MVP %>
+                <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                  <div><%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+                <% end %>
+
+                <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+                  <% if resource.errors.any? || flash[:alert].present? || flash[:error].present? %>
+                    <div><%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+                  <% end %>
+                <% end %>
+
+                <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+                  <% if resource.errors.any? || flash[:alert].present? || flash[:error].present? %>
+                    <div><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %></div>
+                  <% end %>
+                <% end %>
+
+        <% end %>
+<% end %>
+ 
 </div>
