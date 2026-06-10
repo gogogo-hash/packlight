@@ -1,4 +1,4 @@
-<div class="min-h-screen m-4">
+<div class="min-h-screen">
 
 
   <!-- Main Content -->
@@ -12,8 +12,8 @@
             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition ">
               <!-- Image -->
               <div class="w-full bg-slate-200 flex items-center justify-center overflow-hidden h-48">
-                <% if item.photos.first %>
-                  <img src="data:image/jpeg;base64,<%= Base64.strict_encode64(item.photos.first.image_data) %>"
+                <% if item.thumbnail %>
+                  <img src="data:image/jpeg;base64,<%= Base64.strict_encode64(item.thumbnail) %>"
                        alt="<%= item.name %>"
                        class="w-full h-full object-cover group-hover:scale-105 transition">
                 <% else %>
