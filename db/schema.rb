@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_08_221740) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -32,6 +32,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_08_221740) do
     t.string "name"
     t.decimal "price"
     t.string "status"
+    t.binary "thumbnail"
     t.datetime "updated_at", null: false
   end
 

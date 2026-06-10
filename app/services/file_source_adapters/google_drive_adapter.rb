@@ -31,13 +31,16 @@ module FileSourceAdapters
             folder_id   = subfolder.id
 
             # 3. Look for photos specifically inside this subfolder ID
-            photos = list_photos_in_google_folder(folder_id, folder_name, existing_photos)
+            results = list_photos_in_google_folder(folder_id, folder_name, existing_photos)
+            photos = results[:photos]
+            thumbnail = results[:thumbnail]
 
             next if photos.empty?
             items << {
               folder_name: folder_name,
               file_folder_path: folder_name,
-              photos: photos
+              photos: photos,
+              thumbnail: thumbnail
             }
           end
           items
@@ -67,6 +70,7 @@ module FileSourceAdapters
 
     def list_photos_in_google_folder(folder_id, folder_name, existing_photos)
       photos = []
+      thumbnail = nil
       order = 0
       max_size_bytes = 2 * 1024 * 1024 # 2 MB in bytes, TODO: Compress large photos before saving to DB.
       photo_query = "'#{folder_id}' in parents" # Grab everything. Google is not great at filtering by MIME type.
@@ -91,6 +95,9 @@ module FileSourceAdapters
           io_stream.rewind
           binary_data = io_stream.read
           # TODO: This is where we would want to compress large photos.
+
+          thumbnail = generate_thumbnail(binary_data) if order.zero?
+
           photos << {
                 file_name: photo.name,
                 image_data: binary_data, # Figure out how to fetch binary data for this file ID (see Google Drive API docs)
@@ -102,7 +109,25 @@ module FileSourceAdapters
         Rails.logger.error "Failed to fetch photos for folder #{folder_id}: #{e.message}"
         []
       end
-      photos
+      { photos: photos, thumbnail: thumbnail }
+    end
+
+
+    def generate_thumbnail(binary_data, width: 400, quality: 70)
+      image = MiniMagick::Image.read(binary_data)
+      image.combine_options do |c|
+        c.resize "#{width}x#{width}^"
+        c.gravity "center"
+        c.extent "#{width}x#{width}"
+        c.quality quality.to_s
+        c.strip
+        c.interlace "Plane"
+      end
+      image.format "jpeg"
+      image.to_blob
+    rescue MiniMagick::Error => e
+      Rails.logger.error "Thumbnail generation failed: #{e.message}"
+      nil
     end
   end
 end

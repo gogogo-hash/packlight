@@ -49,7 +49,7 @@ class ScannerService
   end
 
   def create_or_update_item(item_data)
-    item = Item.find_or_create_by(file_folder_path: item_data[:file_folder_path])
+    item = Item.find_or_create_by(file_folder_path: item_data[:file_folder_path], thumbnail: item_data[:thumbnail])
     requires_processing = item.previously_new_record?
 
     item_data[:photos].each do |photo_data|
