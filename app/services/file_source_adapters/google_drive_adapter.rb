@@ -31,13 +31,16 @@ module FileSourceAdapters
             folder_id   = subfolder.id
 
             # 3. Look for photos specifically inside this subfolder ID
-            photos = list_photos_in_google_folder(folder_id, folder_name, existing_photos)
+            results = list_photos_in_google_folder(folder_id, folder_name, existing_photos)
+            photos = results[:photos]
+            thumbnail = results[:thumbnail]
 
             next if photos.empty?
             items << {
               folder_name: folder_name,
               file_folder_path: folder_name,
-              photos: photos
+              photos: photos,
+              thumbnail: thumbnail
             }
           end
           items
