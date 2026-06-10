@@ -23,8 +23,50 @@
     <%= javascript_importmap_tags %>
   </head>
 
+
+  <!-- Sticky Header -->
+    <%- if controller_name != 'sessions' && controller_name != 'registrations' %>
+      <header id="site-header" data-controller="menu" class="fixed top-0 inset-x-0 z-50 h-12 bg-[#FAFAF9] shadow">
+        <nav class="max-w-7xl mx-auto h-full px-4 flex justify-between items-center">
+          <%= image_tag "logo.png", alt: "Packlight Logo", class: "h-12 w-auto" %>
+                <span class="text-sm text-slate-600 truncate">Hello, <%= current_user.email %></span>
+          <div class="hidden md:flex items-center gap-4">
+            <% if current_user.admin? %>
+              <%= link_to "Admin Panel", 
+              admin_items_path, 
+              class: "text-sm text-white px-2 py-2 rounded bg-[#0E4450] hover:bg-[#646C5E]" %>
+            <% end %>
+            <%= button_to "Sign Out",
+              destroy_user_session_path,
+              method: :delete,
+              class: "text-sm text-white px-2 py-2 rounded bg-[#0E4450] hover:bg-[#646C5E]" %>        
+          </div>
+            
+          <!-- MOBILE HAMBURGER BUTTON (Visible on mobile, hidden on desktop) -->
+          <button data-action="click->menu#toggle" type="button" class="md:hidden p-2 text-slate-600 hover:text-slate-900 focus:outline-none" aria-label="Toggle menu">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path data-menu-target="icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </nav>
+
+<!-- MOBILE DRAWER DROPDOWN (Hidden by default, slides out panel below header) -->
+    <div data-menu-target="drawer" class="hidden absolute top-12 left-0 w-full bg-[#FAFAF9] border-b border-slate-200 shadow-md md:hidden flex flex-col p-4 gap-4">
+          
+      <% if current_user.admin? %>
+        <%= link_to "Admin Panel", admin_items_path, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>
+      <% end %>
+      <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>        
+    </div>
+
+      </header>
+    <% end %>
+
+
+
+
   <body class="bg-[#F5F3F0]">
-    <main class="container mx-auto justify-center p-5 flex">
+    <main class="container mx-auto justify-center pt-12 flex">
       <%= yield %>
     </main>
   </body>
