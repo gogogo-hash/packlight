@@ -91,16 +91,12 @@ module FileSourceAdapters
           io_stream.rewind
           binary_data = io_stream.read
           # TODO: This is where we would want to compress large photos.
-          if order == 0
-            thumbnail_data = generate_thumbnail(binary_data)
-          else
-            thumbnail_data = nil
-          end
+
+          thumbnail = generate_thumbnail(binary_data) if order.zero?
 
           photos << {
                 file_name: photo.name,
                 image_data: binary_data, # Figure out how to fetch binary data for this file ID (see Google Drive API docs)
-                thumbnail_data: thumbnail_data,
                 order: order
               }
             order += 1
@@ -109,7 +105,7 @@ module FileSourceAdapters
         Rails.logger.error "Failed to fetch photos for folder #{folder_id}: #{e.message}"
         []
       end
-      photos
+      { photos: photos, thumbnail: thumbnail }
     end
 
 
