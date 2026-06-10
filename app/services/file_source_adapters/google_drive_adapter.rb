@@ -67,6 +67,7 @@ module FileSourceAdapters
 
     def list_photos_in_google_folder(folder_id, folder_name, existing_photos)
       photos = []
+      thumbnail = nil
       order = 0
       max_size_bytes = 2 * 1024 * 1024 # 2 MB in bytes, TODO: Compress large photos before saving to DB.
       photo_query = "'#{folder_id}' in parents" # Grab everything. Google is not great at filtering by MIME type.
