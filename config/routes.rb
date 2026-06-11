@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   namespace :admin do
     get "google_drive/connect", to: "google_drive_connections#connect", as: :google_drive_connect
     get "google_drive/callback", to: "google_drive_connections#callback", as: :google_drive_callback
-    resources :items, only: [ :index ] do
+    resources :items, only: [ :index, :edit, :update ] do
       collection do
         post :scan
       end

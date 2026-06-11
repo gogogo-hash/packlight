@@ -69,5 +69,6 @@
     <main class="container mx-auto justify-center pt-12 flex">
       <%= yield %>
     </main>
+    <%= turbo_frame_tag "modal", target: "_top" %>
   </body>
 </html>
