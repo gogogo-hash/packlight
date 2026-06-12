@@ -97,10 +97,12 @@ module FileSourceAdapters
           # TODO: This is where we would want to compress large photos.
 
           thumbnail = generate_thumbnail(binary_data) if order.zero?
+          compressed_photo = compress_photo(binary_data)
+
 
           photos << {
                 file_name: photo.name,
-                image_data: binary_data, # Figure out how to fetch binary data for this file ID (see Google Drive API docs)
+                image_data: compressed_photo, # Figure out how to fetch binary data for this file ID (see Google Drive API docs)
                 order: order
               }
             order += 1
@@ -128,6 +130,21 @@ module FileSourceAdapters
     rescue MiniMagick::Error => e
       Rails.logger.error "Thumbnail generation failed: #{e.message}"
       nil
+    end
+
+    def compress_photo(binary_data, width: 500, quality: 70)
+        image = MiniMagick::Image.read(binary_data)
+        image.combine_options do |c|
+          c.resize "#{width}x#{width}^"
+          c.quality quality.to_s
+          c.strip
+          c.interlace "Plane"
+        end
+        image.format "webp"
+        image.to_blob
+    rescue MiniMagick::Error => e
+          Rails.logger.error "Thumbnail generation failed: #{e.message}"
+          nil
     end
   end
 end
