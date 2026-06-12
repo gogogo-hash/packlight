@@ -28,7 +28,7 @@
     <%- if controller_name != 'sessions' && controller_name != 'registrations' %>
       <header id="site-header" data-controller="menu" class="fixed top-0 inset-x-0 z-50 h-12 bg-[#FAFAF9] shadow">
         <nav class="max-w-7xl mx-auto h-full px-4 flex justify-between items-center">
-          <%= image_tag "logo.png", alt: "Packlight Logo", class: "h-12 w-auto" %>
+          <%= image_tag "logo.png", alt: "Packlight Logo", class: "h-24 w-auto mt-2" %>
                 <span class="text-sm text-slate-600 truncate">Hello, <%= current_user.email %></span>
           <div class="hidden md:flex items-center gap-4">
             <% if current_user.admin? %>
