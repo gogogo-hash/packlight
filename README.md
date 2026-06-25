@@ -31,11 +31,11 @@ The goal is to turn a weekend of work into a few minutes.
 |---|---|---|
 | Framework | Ruby on Rails 7 | Chosen for velocity on solo build |
 | Database | PostgreSQL | Standard Rails pairing |
-| Auth | Devise | Email + password, invite-gated signup |
-| Storage | Active Storage | Cloud-backed for ingestion pipeline |
+| Auth | Devise | Email + password, OmniAuth, Google OAuth2, invite-gated signup |
+| Storage | Active Storage | Cloud-backed for ingestion pipeline. Google Drive integration used for user generated photos. planned: direct device integration |
 | AI Layer | Gemini 2.5 Flash (primary), Claude + OpenAI (planned) | Model-agnostic provider interface |
 | Frontend | Hotwire / Turbo / Stimulus | Rails-native, no SPA overhead |
-| Deployment | TBD (likely Fly.io or Render) | Containerized via Docker |
+| Deployment | Railway | Containerized via Docker |
 
 ---
 
