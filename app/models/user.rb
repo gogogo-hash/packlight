@@ -4,6 +4,7 @@ class User < ApplicationRecord
          :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
+  has_many :items, foreign_key: :admin_id, dependent: :restrict_with_error
   has_many :comments, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
 
