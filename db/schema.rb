@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_28_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
   end
 
   create_table "items", force: :cascade do |t|
+    t.bigint "admin_id"
     t.datetime "created_at", null: false
     t.text "description"
     t.string "file_folder_path"
@@ -34,6 +35,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
     t.string "status"
     t.binary "thumbnail"
     t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_items_on_admin_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -222,6 +224,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
 
   add_foreign_key "comments", "items"
   add_foreign_key "comments", "users"
+  add_foreign_key "items", "users", column: "admin_id"
   add_foreign_key "photos", "items"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
