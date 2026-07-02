@@ -1,16 +1,24 @@
 <div class="min-h-screen">
 
-
-  <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 py-4">
-    <h2 class="text-[24px] font-semibold text-slate-800 mb-8 text-center">Collections</h2>
 
+    <!-- Back Link -->
+    <div class="mb-2 mt-4">
+      <%= link_to communities_path, class: "group inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform group-hover:-translate-x-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+        Back to communities
+      <% end %>
+    </div>
+
+
+    <h2 class="text-[24px] font-semibold text-slate-800 mb-8 text-center"><%= @admin.email.split("@").first.capitalize %>'s Packlight</h2>
     <% if @items.any? %>
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <% @items.each do |item| %>
-          <%= link_to item_path(item), class: "group" do %>
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition ">
-              <!-- Image -->
+          <%= link_to packlight_item_path(packlight_id: @admin.packlight_id, id: item.id), class: "group" do %>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
               <div class="w-full bg-slate-200 flex items-center justify-center overflow-hidden h-48">
                 <% if item.thumbnail %>
                   <img src="data:image/jpeg;base64,<%= Base64.strict_encode64(item.thumbnail) %>"
@@ -20,8 +28,6 @@
                   <div class="text-slate-400">No image</div>
                 <% end %>
               </div>
-
-              <!-- Info -->
               <div class="p-4">
                 <h3 class="text-[12px] font-semibold text-slate-800 line-clamp-2"><%= item.name %></h3>
                 <p class="text-lg font-semibold text-slate-800 mt-2">$<%= number_with_precision(item.price, precision: 2) %></p>

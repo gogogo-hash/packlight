@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
-  root "items#index"
+  root "communities#index"
 
-  resources :items, only: [ :index, :show ] do
+  resources :communities, only: [ :index ]
+  resources :items, only: [ :show ] do
     resources :comments, only: [ :create ]
     resources :subscriptions, only: [ :create, :destroy ]
+  end
+
+  scope "/p/:packlight_id", as: "packlight" do
+    get "/", to: "packlight_pages#show", as: "page"
+    get "/items/:id", to: "packlight_pages#item", as: "item"
   end
 
   namespace :admin do

@@ -8,8 +8,19 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
 
+  before_create :generate_packlight_id
+
   def admin?
     admin == true
+  end
+
+  private
+
+  def generate_packlight_id
+    loop do
+      self.packlight_id = SecureRandom.alphanumeric(8).downcase
+      break unless User.exists?(packlight_id: packlight_id)
+    end
   end
 
   def self.from_omniauth(auth)
