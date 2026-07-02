@@ -1,0 +1,25 @@
+<div class="min-h-screen">
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <h2 class="text-[24px] font-semibold text-slate-800 mb-8 text-center">Collections</h2>
+    <% if @users.any? %>
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <% @users.each do |user| %>
+
+              <div class="w-full bg-slate-200 flex items-center justify-center overflow-hidden h-48">
+                <% if user.packlight_id %>
+                  <%= link_to packlight_page_path(packlight_id: user.packlight_id), class: "text-[12px] font-semibold text-slate-800 line-clamp-2 hover:underline" do %>
+                    <%= user.email.split("@").first.capitalize %>'s Packlight
+                  <% end %>
+                <% end %>
+              </div>
+
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <p class="text-slate-600 text-lg">You have not been invited to see any Packlight collections yet.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

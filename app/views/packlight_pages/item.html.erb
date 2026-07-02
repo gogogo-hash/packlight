@@ -1,14 +1,12 @@
 <div class="min-h-screen">
-
-
   <div class="max-w-6xl mx-auto px-4 py-8">
     <!-- Back Link -->
     <div class="mb-6">
-      <%= link_to items_path, class: "group inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors" do %>
+      <%= link_to packlight_page_path(packlight_id: @admin.packlight_id), class: "group inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors" do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform group-hover:-translate-x-1">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
-        Back to items
+        Back to <%= @admin.email.split("@").first.capitalize %>'s Packlight
       <% end %>
     </div>
 
