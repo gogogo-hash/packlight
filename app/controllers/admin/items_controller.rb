@@ -2,7 +2,45 @@ class Admin::ItemsController < Admin::ApplicationController
   before_action :set_item, only: [ :edit, :update ]
 
   def index
-    @items = current_user.items.order(last_scanned_at: :desc)
+    @items = current_user.items.order(created_at: :desc)
+  end
+
+  def new
+    @item = Item.new
+  end
+
+  def create
+    uploaded_files = Array(params[:photos]).compact_blank
+
+    if uploaded_files.empty?
+      redirect_to new_admin_item_path, alert: "Please select at least one photo."
+      return
+    end
+
+    item = current_user.items.create!(status: "pending")
+
+    uploaded_files.each_with_index do |file, index|
+      raw_data = file.read
+      image_data = compress_photo(raw_data)
+      next if image_data.nil?
+
+      item.photos.create!(
+        file_name: file.original_filename,
+        image_data: image_data,
+        order: index
+      )
+
+      if index == 0
+        thumbnail = generate_thumbnail(raw_data)
+        item.update(thumbnail: thumbnail) if thumbnail
+      end
+    end
+
+    ProcessItemJob.perform_later(item.id)
+    redirect_to admin_items_path, notice: "Item uploaded. AI processing has started."
+  rescue => e
+    Rails.logger.error("Manual item creation failed: #{e.message}")
+    redirect_to new_admin_item_path, alert: "Something went wrong. Please try again."
   end
 
   def scan
@@ -59,5 +97,37 @@ class Admin::ItemsController < Admin::ApplicationController
 
   def item_params
     params.require(:item).permit(:price, :description)
+  end
+
+  def generate_thumbnail(binary_data, width: 400, quality: 70)
+    image = MiniMagick::Image.read(binary_data)
+    image.combine_options do |c|
+      c.resize "#{width}x#{width}^"
+      c.gravity "center"
+      c.extent "#{width}x#{width}"
+      c.quality quality.to_s
+      c.strip
+      c.interlace "Plane"
+    end
+    image.format "jpeg"
+    image.to_blob
+  rescue MiniMagick::Error => e
+    Rails.logger.error "Thumbnail generation failed: #{e.message}"
+    nil
+  end
+
+  def compress_photo(binary_data, width: 500, quality: 70)
+    image = MiniMagick::Image.read(binary_data)
+    image.combine_options do |c|
+      c.resize "#{width}x#{width}^"
+      c.quality quality.to_s
+      c.strip
+      c.interlace "Plane"
+    end
+    image.format "webp"
+    image.to_blob
+  rescue MiniMagick::Error => e
+    Rails.logger.error "Photo compression failed: #{e.message}"
+    nil
   end
 end
