@@ -27,25 +27,6 @@
         <%= link_to "Create Item", new_admin_item_path,
               data: { turbo_frame: "modal" },
               class: "w-full text-center bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200" %>
-        <%= button_to "Connect Google Drive", 
-                      admin_google_drive_connect_path,
-                      method: :get,
-                      data: { turbo: false }, 
-                      class: "w-full bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200" %> 
-
-          <%= form_with url: scan_admin_items_path, method: :post, local: true, class: "flex flex-col gap-4 max-w-xs" do |f| %>
-          <%= hidden_field_tag :file_source_type, "google_drive" %>
-          <%= hidden_field_tag :user_id, current_user.id %>
-
-        <div class="w-full">
-          <%= text_field_tag :file_source_path, nil, 
-                        placeholder: "Enter Google Folder ID", 
-                        class: "w-full bg-white text-slate-800 placeholder:text-slate-500 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 rounded" %>  
-        </div>
-
-        <%= f.submit "Scan Google Drive Now", 
-                class: "w-full bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200" %> 
-        <% end %>
 
       </div>
       
