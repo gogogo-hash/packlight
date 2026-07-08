@@ -1,6 +1,7 @@
 <tr id="<%= dom_id(item) %>" class="border-b hover:bg-slate-50">
   <td class="px-6 py-4 text-slate-800 font-medium">
-    <%= link_to item.file_folder_path[item.file_folder_path.rindex('/')..-1],
+    <% display_name = item.name.presence || item.file_folder_path&.split("/")&.last || "Untitled" %>
+    <%= link_to display_name,
     packlight_item_path(packlight_id: item.admin.packlight_id, id: item.id),
     class: "text-slate-800 font-semibold hover:text-indigo-600 transition-colors duration-150", data: { turbo: false } %>
   </td>
