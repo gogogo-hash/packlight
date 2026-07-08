@@ -1,25 +1,74 @@
 <div class="min-h-screen">
-  <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 py-4">
-    <h2 class="text-[24px] font-semibold text-slate-800 mb-8 text-center">Collections</h2>
-    <% if @users.any? %>
-      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <% @users.each do |user| %>
 
-              <div class="w-full bg-slate-200 flex items-center justify-center overflow-hidden h-48">
-                <% if user.packlight_id %>
-                  <%= link_to packlight_page_path(packlight_id: user.packlight_id), class: "text-[12px] font-semibold text-slate-800 line-clamp-2 hover:underline" do %>
-                    <%= user.email.split("@").first.capitalize %>'s Packlight
+    <!-- Search -->
+    <div class="mb-10">
+      <%= form_with url: communities_path, method: :get, local: true, class: "flex gap-2 max-w-xl mx-auto" do %>
+        <input type="text" name="q" value="<%= params[:q] %>"
+               placeholder="Search listings..."
+               class="flex-1 bg-white text-slate-800 placeholder:text-slate-500 border border-slate-300 rounded-sm px-4 py-2 text-sm focus:ring-2 focus:ring-[#0E4450] focus:outline-none">
+        <%= button_tag "Search", type: "submit",
+              class: "bg-[#0E4450] hover:bg-[#646C5E] text-white text-sm font-semibold px-4 py-2 rounded-sm transition duration-200" %>
+      <% end %>
+    </div>
+
+    <!-- Recent Listings feed -->
+    <section class="mb-12">
+      <h2 class="text-[20px] font-semibold text-slate-800 mb-4">Recent Listings</h2>
+
+      <% if @recent_items.present? && @recent_items.any? %>
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <% @recent_items.each do |item| %>
+            <%= link_to packlight_item_path(packlight_id: item.user.packlight_id, id: item.id), class: "group" do %>
+              <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="w-full bg-slate-200 flex items-center justify-center overflow-hidden h-40">
+                  <% if item.thumbnail %>
+                    <img src="data:image/jpeg;base64,<%= Base64.strict_encode64(item.thumbnail) %>"
+                         alt="<%= item.name %>"
+                         class="w-full h-full object-cover group-hover:scale-105 transition">
+                  <% else %>
+                    <div class="text-slate-400 text-xs">No image</div>
                   <% end %>
-                <% end %>
+                </div>
+                <div class="p-3">
+                  <h3 class="text-[12px] font-semibold text-slate-800 line-clamp-2"><%= item.name %></h3>
+                  <p class="text-sm font-semibold text-slate-800 mt-1">$<%= number_with_precision(item.price, precision: 2) %></p>
+                </div>
               </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-8 bg-white rounded-lg shadow-sm">
+          <p class="text-slate-500 text-sm">No listings yet. New items will show up here as your communities add them.</p>
+        </div>
+      <% end %>
+    </section>
 
-        <% end %>
-      </div>
-    <% else %>
-      <div class="text-center py-12">
-        <p class="text-slate-600 text-lg">You have not been invited to see any Packlight collections yet.</p>
-      </div>
-    <% end %>
+    <!-- Communities -->
+    <section>
+      <h2 class="text-[20px] font-semibold text-slate-800 mb-4">Communities</h2>
+
+      <% if @users.any? %>
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <% @users.each do |user| %>
+            <% if user.packlight_id %>
+              <%= link_to packlight_page_path(packlight_id: user.packlight_id), class: "group block" do %>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-32 flex items-center justify-center p-4">
+                  <span class="text-[13px] font-semibold text-slate-800 text-center line-clamp-2 group-hover:underline">
+                    <%= user.email.split("@").first.capitalize %>'s Packlight
+                  </span>
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <p class="text-slate-600 text-lg">You have not been invited to see any Packlight collections yet.</p>
+        </div>
+      <% end %>
+    </section>
+
   </div>
 </div>
