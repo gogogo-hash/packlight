@@ -22,6 +22,7 @@ Rails.application.routes.draw do
         post :scan
       end
     end
+    resources :packlight_accesses, only: [ :create, :destroy ]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

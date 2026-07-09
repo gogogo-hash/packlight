@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_29_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_09_211441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -36,6 +36,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_29_000001) do
     t.binary "thumbnail"
     t.datetime "updated_at", null: false
     t.index ["admin_id"], name: "index_items_on_admin_id"
+  end
+
+  create_table "packlight_accesses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.string "packlight_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email", "packlight_id"], name: "index_packlight_accesses_on_email_and_packlight_id", unique: true
   end
 
   create_table "photos", force: :cascade do |t|

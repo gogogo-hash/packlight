@@ -3,6 +3,8 @@ class Admin::ItemsController < Admin::ApplicationController
 
   def index
     @items = current_user.items.order(created_at: :desc)
+    @packlight_accesses = current_user.packlight_accesses.order(created_at: :desc)
+    @packlight_access = PacklightAccess.new
   end
 
   def new

@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "packlight_accesses_list" do %>
+  <%= render "admin/packlight_accesses/list", packlight_accesses: @packlight_accesses %>
+<% end %>
+
+<%= turbo_stream.replace "packlight_access_message" do %>
+  <%= render "admin/packlight_accesses/message", message: @message, message_type: @message_type %>
+<% end %>

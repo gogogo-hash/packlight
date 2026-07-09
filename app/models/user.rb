@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :items, foreign_key: :admin_id, dependent: :restrict_with_error
   has_many :comments, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
+  has_many :packlight_accesses, foreign_key: :packlight_id, primary_key: :packlight_id, dependent: :destroy
 
   before_create :generate_packlight_id
 

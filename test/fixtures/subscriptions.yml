@@ -2,10 +2,10 @@
 
 one:
   subscribable: one
-  subscribable_type: Subscribable
-  user: one
+  subscribable_type: Item
+  user: admin_one
 
 two:
   subscribable: two
-  subscribable_type: Subscribable
-  user: two
+  subscribable_type: Item
+  user: regular_user
