@@ -32,6 +32,24 @@
       
     </div>
 
+      <!-- Community Access -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-slate-800 mb-1">Invite Members</h3>
+        <p class="text-sm text-slate-500 mb-4">
+          Invite someone by email, then share your page link with them:
+          <%= link_to packlight_page_url(packlight_id: current_user.packlight_id), packlight_page_url(packlight_id: current_user.packlight_id), class: "text-indigo-600 hover:text-indigo-900 font-semibold" %>
+        </p>
+
+        <%= form_with model: @packlight_access, url: admin_packlight_accesses_path, class: "flex gap-2 max-w-md mb-4" do |f| %>
+          <%= f.email_field :email, placeholder: "email@example.com", required: true,
+                class: "flex-1 border border-slate-300 rounded-md px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none" %>
+          <%= f.submit "Invite", class: "px-4 py-2 bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold rounded-sm text-sm transition duration-200 cursor-pointer" %>
+        <% end %>
+
+        <%= render "admin/packlight_accesses/message", message: nil, message_type: nil %>
+        <%= render "admin/packlight_accesses/list", packlight_accesses: @packlight_accesses %>
+      </div>
+
       <!-- Items Status -->
       <div class="bg-white rounded-sm shadow overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-200">

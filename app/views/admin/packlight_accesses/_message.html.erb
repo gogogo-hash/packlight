@@ -1,0 +1,7 @@
+<div id="packlight_access_message">
+  <% if message.present? %>
+    <p class="text-sm mb-4 <%= message_type == :alert ? "text-red-600" : "text-slate-600" %>">
+      <%= message %>
+    </p>
+  <% end %>
+</div>
