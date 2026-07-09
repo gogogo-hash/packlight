@@ -19,7 +19,7 @@
       <% if @recent_items.present? && @recent_items.any? %>
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <% @recent_items.each do |item| %>
-            <%= link_to packlight_item_path(packlight_id: item.user.packlight_id, id: item.id), class: "group" do %>
+            <%= link_to packlight_item_path(packlight_id: item.admin.packlight_id, id: item.id), class: "group" do %>
               <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
                 <div class="w-full bg-slate-200 flex items-center justify-center overflow-hidden h-40">
                   <% if item.thumbnail %>
