@@ -1,0 +1,5 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+regular_user_invited_to_admin_one:
+  email: user@example.com
+  packlight_id: testadm1

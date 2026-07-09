@@ -2,10 +2,10 @@
 
 one:
   item: one
-  user: one
+  user: admin_one
   content: MyText
 
 two:
   item: two
-  user: two
+  user: regular_user
   content: MyText
