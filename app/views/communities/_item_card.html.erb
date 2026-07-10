@@ -1,0 +1,17 @@
+<%= link_to packlight_item_path(packlight_id: item.admin.packlight_id, id: item.id), class: "group" do %>
+  <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+    <div class="w-full bg-slate-200 flex items-center justify-center overflow-hidden h-40">
+      <% if item.thumbnail %>
+        <img src="data:image/jpeg;base64,<%= Base64.strict_encode64(item.thumbnail) %>"
+             alt="<%= item.name %>"
+             class="w-full h-full object-cover group-hover:scale-105 transition">
+      <% else %>
+        <div class="text-slate-400 text-xs">No image</div>
+      <% end %>
+    </div>
+    <div class="p-3">
+      <h3 class="text-[12px] font-semibold text-slate-800 line-clamp-2"><%= item.name %></h3>
+      <p class="text-sm font-semibold text-slate-800 mt-1">$<%= number_with_precision(item.price, precision: 2) %></p>
+    </div>
+  </div>
+<% end %>
