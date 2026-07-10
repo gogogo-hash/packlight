@@ -15,10 +15,10 @@
     <!-- Search Results -->
     <% if params[:q].present? %>
       <section class="mb-12">
-        <h2 class="text-[20px] font-semibold text-slate-800 mb-4">Search Results for &ldquo;<%= params[:q] %>&rdquo;</h2>
+        <h2 class="text-[32px] font-semibold text-slate-800 mb-4">Search Results for &ldquo;<%= params[:q] %>&rdquo;</h2>
 
         <% if @search_results.present? %>
-          <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <div class="grid grid-cols-2 lg:grid-cols-2 gap-4">
             <%= render partial: "item_card", collection: @search_results, as: :item %>
           </div>
         <% else %>
@@ -31,10 +31,10 @@
 
     <!-- Recent Listings feed -->
     <section class="mb-12">
-      <h2 class="text-[20px] font-semibold text-slate-800 mb-4">Recent Listings</h2>
+      <h2 class="text-[32px] font-semibold text-slate-800 mb-4">Recent Listings</h2>
 
       <% if @recent_items.present? && @recent_items.any? %>
-        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 lg:grid-cols-2 gap-4">
           <%= render partial: "item_card", collection: @recent_items, as: :item %>
         </div>
       <% else %>
@@ -46,7 +46,7 @@
 
     <!-- Communities -->
     <section>
-      <h2 class="text-[20px] font-semibold text-slate-800 mb-4">Communities</h2>
+      <h2 class="text-[32px] font-semibold text-slate-800 mb-4">Communities</h2>
 
       <% if @users.any? %>
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
