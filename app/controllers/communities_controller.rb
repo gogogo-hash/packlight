@@ -12,6 +12,13 @@ class CommunitiesController < ApplicationController
                          .order(created_at: :desc)
                          .limit(10)
 
+    watched_scope = Item.includes(:admin)
+                         .joins(:admin, :subscriptions)
+                         .where(subscriptions: { user_id: current_user.id })
+                         .where(users: { packlight_id: accessible_packlight_ids }, status: "processed")
+                         .order("subscriptions.created_at DESC")
+    @pagy, @watched_items = pagy(watched_scope, items: 10)
+
     if params[:q].present?
       @search_results = search_items(accessible_packlight_ids, params[:q])
     end

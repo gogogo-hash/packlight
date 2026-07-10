@@ -6,9 +6,9 @@ class SubscriptionsController < ApplicationController
     subscription = current_user.subscriptions.build(subscribable: @subscribable)
 
     if subscription.save
-      redirect_to @subscribable, notice: "Subscribed successfully."
+      redirect_to subscribable_path, notice: "Subscribed successfully."
     else
-      redirect_to @subscribable, alert: "Could not subscribe."
+      redirect_to subscribable_path, alert: "Could not subscribe."
     end
   end
 
@@ -17,7 +17,7 @@ class SubscriptionsController < ApplicationController
       subscribable: @subscribable
     )
     subscription&.destroy
-    redirect_to @subscribable, notice: "Unsubscribed."
+    redirect_to subscribable_path, notice: "Unsubscribed."
   end
 
   private
@@ -26,5 +26,9 @@ class SubscriptionsController < ApplicationController
     if params[:item_id]
       @subscribable = Item.find(params[:item_id])
     end
+  end
+
+  def subscribable_path
+    packlight_item_path(packlight_id: @subscribable.admin.packlight_id, id: @subscribable.id)
   end
 end

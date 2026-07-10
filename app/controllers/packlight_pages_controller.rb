@@ -11,6 +11,7 @@ class PacklightPagesController < ApplicationController
     @item = @admin.items.find(params[:id])
     @comments = @item.comments.includes(:user).order(created_at: :desc)
     @comment = Comment.new
+    @subscribed = @item.subscriptions.exists?(user_id: current_user.id)
   end
 
   private
