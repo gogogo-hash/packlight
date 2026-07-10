@@ -1,0 +1,13 @@
+<%= link_to packlight_page_path(packlight_id: user.packlight_id), class: "group" do %>
+  <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex">
+    <div class="w-1/3 flex-shrink-0 bg-white flex items-center justify-center overflow-hidden h-40 py-[10px] px-[15px]">
+      <div class="w-28 h-28 rounded-full bg-slate-200 flex items-center justify-center">
+        <span class="text-slate-400 text-xs">No photo</span>
+      </div>
+    </div>
+    <div class="py-5 px-6 flex flex-col justify-center">
+      <h3 class="text-[16px] font-semibold text-slate-800 line-clamp-2 group-hover:underline"><%= user.email.split("@").first.capitalize %>'s Packlight</h3>
+      <h3 class="text-[14px] text-slate-600 line-clamp-2">No description yet.</h3>
+    </div>
+  </div>
+<% end %>

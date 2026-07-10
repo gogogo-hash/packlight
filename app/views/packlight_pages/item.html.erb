@@ -62,20 +62,18 @@
           <p class="text-4xl font-bold text-slate-800 mb-4">$<%= number_with_precision(@item.price, precision: 2) %></p>
           <p class="text-slate-600 mb-6"><%= @item.description %></p>
 
-          <!-- TODO: Subscribe Button Implementation -->
+          <!-- Watch Button -->
           <div>
-            <% if false %>
             <% if @subscribed %>
-              <%= button_to "Unsubscribe from updates",
+              <%= button_to "Unwatch Item",
                     item_subscription_path(@item),
                     method: :delete,
                     class: "w-full bg-slate-300 text-slate-800 font-semibold py-2 px-4 rounded hover:bg-slate-400" %>
             <% else %>
-              <%= button_to "Subscribe to comments",
+              <%= button_to "Watch Item",
                     item_subscriptions_path(@item),
                     method: :create,
                     class: "w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700" %>
-            <% end %>
             <% end %>
 
 
