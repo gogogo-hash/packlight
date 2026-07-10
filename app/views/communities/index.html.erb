@@ -6,7 +6,7 @@
       <%= form_with url: communities_path, method: :get, local: true, class: "flex gap-2 max-w-xl mx-auto" do %>
         <input type="text" name="q" value="<%= params[:q] %>"
                placeholder="Search listings..."
-               class="flex-1 bg-white text-slate-800 placeholder:text-slate-500 border border-slate-300 rounded-sm px-4 py-2 text-sm focus:ring-2 focus:ring-[#0E4450] focus:outline-none">
+               class="flex-1 h-[50px] bg-white text-slate-800 placeholder:text-slate-500 border border-slate-300 rounded-sm px-4 text-[16px] focus:ring-2 focus:ring-[#0E4450] focus:outline-none">
         <%= button_tag "Search", type: "submit",
               class: "bg-[#0E4450] hover:bg-[#646C5E] text-white text-sm font-semibold px-4 py-2 rounded-sm transition duration-200" %>
       <% end %>
@@ -49,18 +49,8 @@
       <h2 class="text-[32px] font-semibold text-slate-800 mb-4">Communities</h2>
 
       <% if @users.any? %>
-        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-          <% @users.each do |user| %>
-            <% if user.packlight_id %>
-              <%= link_to packlight_page_path(packlight_id: user.packlight_id), class: "group block" do %>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-32 flex items-center justify-center p-4">
-                  <span class="text-[13px] font-semibold text-slate-800 text-center line-clamp-2 group-hover:underline">
-                    <%= user.email.split("@").first.capitalize %>'s Packlight
-                  </span>
-                </div>
-              <% end %>
-            <% end %>
-          <% end %>
+        <div class="grid grid-cols-2 lg:grid-cols-2 gap-4">
+          <%= render partial: "user_card", collection: @users.select(&:packlight_id), as: :user %>
         </div>
       <% else %>
         <div class="text-center py-12">

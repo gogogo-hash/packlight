@@ -9,13 +9,16 @@
         <div class="text-slate-400 text-xs">No image</div>
       <% end %>
     </div>
-    <div class="p-3 flex flex-col justify-center">
-      <h3 class="text-[16px] font-semibold text-slate-800 line-clamp-2"><%= item.name %></h3>
-      <h3 class="text-[14px] text-slate-600 line-clamp-2"><%= item.description %></h3>
-      <h3 class="text-[14px] text-slate-600 line-clamp-2"><%= time_ago_in_words(item.created_at) %> ago</h3>
+    <div class="py-5 px-6 flex flex-col justify-between">
+      <div>
+        <h3 class="text-[16px] font-semibold text-slate-800 line-clamp-2"><%= item.name %></h3>
+        <h3 class="text-[14px] text-slate-600 line-clamp-2"><%= item.description %></h3>
+      </div>
 
-
-      <p class="text-[16px] font-semibold text-[#F1AF16] mt-1">$<%= number_with_precision(item.price, precision: 2) %></p>
+      <div class="flex items-center justify-between mt-1">
+        <h3 class="text-[14px] text-slate-600"><%= time_ago_in_words(item.created_at) %> ago</h3>
+        <p class="text-[16px] font-semibold text-[#F1AF16]">$<%= number_with_precision(item.price, precision: 2) %></p>
+      </div>
     </div>
   </div>
 <% end %>

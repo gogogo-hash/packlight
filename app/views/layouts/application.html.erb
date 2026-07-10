@@ -36,6 +36,8 @@
               admin_items_path, 
               class: "text-sm text-white px-2 py-2 rounded bg-[#0E4450] hover:bg-[#646C5E]" %>
             <% end %>
+            <%= link_to "Home", root_path, class: "text-sm text-white px-2 py-2 rounded bg-[#0E4450] hover:bg-[#646C5E]" %>
+
             <%= button_to "Sign Out",
               destroy_user_session_path,
               method: :delete,
@@ -56,6 +58,8 @@
       <% if current_user.admin? %>
         <%= link_to "Admin Panel", admin_items_path, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>
       <% end %>
+      <%= link_to "Home", root_path, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>
+
       <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>        
     </div>
 
