@@ -45,7 +45,7 @@
     </section>
 
     <!-- Watch Listings feed -->
-    <section class="mb-12">
+    <section id="watch-list" class="mb-12">
       <h2 class="text-[32px] font-semibold text-slate-800 mb-4">Watch List</h2>
 
       <% if @watched_items.present? && @watched_items.any? %>
@@ -56,7 +56,7 @@
         <% if @pagy.pages > 1 %>
           <div class="flex justify-center items-center gap-4 mt-4">
             <% if @pagy.prev %>
-              <%= link_to "Previous", communities_path(page: @pagy.prev), class: "bg-[#0E4450] hover:bg-[#646C5E] text-white text-sm font-semibold px-4 py-2 rounded-sm transition duration-200" %>
+              <%= link_to "Previous", communities_path(page: @pagy.prev, anchor: "watch-list"), class: "bg-[#0E4450] hover:bg-[#646C5E] text-white text-sm font-semibold px-4 py-2 rounded-sm transition duration-200" %>
             <% else %>
               <span class="bg-slate-200 text-slate-400 text-sm font-semibold px-4 py-2 rounded-sm cursor-not-allowed">Previous</span>
             <% end %>
@@ -64,7 +64,7 @@
             <span class="text-sm text-slate-600">Page <%= @pagy.page %> of <%= @pagy.pages %></span>
 
             <% if @pagy.next %>
-              <%= link_to "Next", communities_path(page: @pagy.next), class: "bg-[#0E4450] hover:bg-[#646C5E] text-white text-sm font-semibold px-4 py-2 rounded-sm transition duration-200" %>
+              <%= link_to "Next", communities_path(page: @pagy.next, anchor: "watch-list"), class: "bg-[#0E4450] hover:bg-[#646C5E] text-white text-sm font-semibold px-4 py-2 rounded-sm transition duration-200" %>
             <% else %>
               <span class="bg-slate-200 text-slate-400 text-sm font-semibold px-4 py-2 rounded-sm cursor-not-allowed">Next</span>
             <% end %>
