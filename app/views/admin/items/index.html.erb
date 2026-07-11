@@ -16,44 +16,55 @@
 
     <div class="mb-2">
 
-      <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl mb-2">
-        File Server Scan
-      </h2>
-      <p class="text-sm sm:text-base text-slate-500 max-w-2xl leading-relaxed mb-6">
-        Scan your file server for new items and process them with Gemini AI.
-      </p>
+   
 
-      <div class="flex flex-col gap-4 max-w-xs">
-        <%= link_to "Create Item", new_admin_item_path,
-              data: { turbo_frame: "modal" },
-              class: "w-full text-center bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200" %>
 
-      </div>
       
     </div>
 
       <!-- Community Access -->
       <div class="mb-8">
-        <h3 class="text-lg font-semibold text-slate-800 mb-1">Invite Members</h3>
-        <p class="text-sm text-slate-500 mb-4">
-          Invite someone by email, then share your page link with them:
-          <%= link_to packlight_page_url(packlight_id: current_user.packlight_id), packlight_page_url(packlight_id: current_user.packlight_id), class: "text-indigo-600 hover:text-indigo-900 font-semibold" %>
-        </p>
+       
+       
 
         <%= form_with model: @packlight_access, url: admin_packlight_accesses_path, class: "flex gap-2 max-w-md mb-4" do |f| %>
           <%= f.email_field :email, placeholder: "email@example.com", required: true,
                 class: "flex-1 border border-slate-300 rounded-md px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none" %>
-          <%= f.submit "Invite", class: "px-4 py-2 bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold rounded-sm text-sm transition duration-200 cursor-pointer" %>
+          <%= f.submit "Invite To Your Packlight!", class: "px-4 py-2 bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold rounded-sm text-sm transition duration-200 cursor-pointer" %>
         <% end %>
+         <p class="text-sm text-slate-500 mb-4">
+           Then share your packlight page with them:
+          <%= link_to packlight_page_url(packlight_id: current_user.packlight_id), packlight_page_url(packlight_id: current_user.packlight_id), class: "text-indigo-600 hover:text-indigo-900 font-semibold" %>
+        </p>
 
         <%= render "admin/packlight_accesses/message", message: nil, message_type: nil %>
         <%= render "admin/packlight_accesses/list", packlight_accesses: @packlight_accesses %>
       </div>
 
+      <!-- Recent Activity -->
+      <% if @activity_items.any? %>
+        <div class="bg-white rounded-sm shadow overflow-hidden mb-8" id="activity_list">
+          <div class="px-6 py-4 border-b border-slate-200">
+            <h3 class="text-lg font-semibold text-slate-800">Recent Activity</h3>
+            <p class="text-sm text-slate-500">Items with new comments since you last checked them.</p>
+          </div>
+          <%= render partial: "admin/items/activity_row", collection: @activity_items, as: :item %>
+        </div>
+      <% end %>
+
       <!-- Items Status -->
+
+      <div class="flex flex-col gap-4 max-w-xs py-4">
+        <%= link_to "Create Listing", new_admin_item_path,
+              data: { turbo_frame: "modal" },
+              class: "w-full text-center bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200" %>
+
+      </div>
+
+
       <div class="bg-white rounded-sm shadow overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-200">
-          <h3 class="text-lg font-semibold text-slate-800">Items Status</h3>
+          <h3 class="text-lg font-semibold text-slate-800">Listing Status</h3>
         </div>
 
         <% if @items.any? %>
@@ -63,7 +74,6 @@
                 <tr>
                   <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">File Folder Path</th>
                   <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Status</th>
-                  <th class="hidden md:table-cell px-6 py-3 text-left text-sm font-semibold text-slate-700">Last Scanned</th> 
                   <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Price</th>
                   <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Actions</th>
                 </tr>

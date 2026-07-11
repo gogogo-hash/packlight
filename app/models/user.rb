@@ -11,8 +11,18 @@ class User < ApplicationRecord
 
   before_create :generate_packlight_id
 
+  AI_LISTING_LIMIT = 100
+
   def admin?
     admin == true
+  end
+
+  def ai_listing_limit_reached?
+    ai_listings_count >= AI_LISTING_LIMIT
+  end
+
+  def remaining_ai_listings
+    [ AI_LISTING_LIMIT - ai_listings_count, 0 ].max
   end
 
   private
