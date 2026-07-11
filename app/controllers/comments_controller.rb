@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      NotifySubscribersJob.perform_later(@comment.id)
+      # NotifySubscribersJob disabled for beta — not using subscriber email notifications yet.
       redirect_to @item, notice: "Comment created successfully."
     else
       redirect_to @item, alert: "Error creating comment."
