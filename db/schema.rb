@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_10_202501) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_060108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_202501) do
     t.bigint "user_id", null: false
     t.index ["item_id"], name: "index_comments_on_item_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "item_reviews", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "item_id", null: false
+    t.datetime "last_checked_at"
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_reviews_on_item_id", unique: true
   end
 
   create_table "items", force: :cascade do |t|
@@ -190,6 +198,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_202501) do
 
   create_table "users", force: :cascade do |t|
     t.boolean "admin"
+    t.integer "ai_listings_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -235,6 +244,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_202501) do
 
   add_foreign_key "comments", "items"
   add_foreign_key "comments", "users"
+  add_foreign_key "item_reviews", "items"
   add_foreign_key "items", "users", column: "admin_id"
   add_foreign_key "photos", "items"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
