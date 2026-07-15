@@ -3,17 +3,17 @@
 admin_one:
   email: admin1@example.com
   encrypted_password: <%= BCrypt::Password.create("password") %>
-  admin: true
+  beta_cohort: true
   packlight_id: testadm1
 
 admin_two:
   email: admin2@example.com
   encrypted_password: <%= BCrypt::Password.create("password") %>
-  admin: true
+  beta_cohort: true
   packlight_id: testadm2
 
 regular_user:
   email: user@example.com
   encrypted_password: <%= BCrypt::Password.create("password") %>
-  admin: false
+  beta_cohort: false
   packlight_id: testusr1

@@ -1,7 +1,6 @@
 # app/controllers/admin/google_drive_connections_controller.rb
-class Admin::GoogleDriveConnectionsController < ApplicationController
-  # before_action :authenticate_user!
-  # before_action :ensure_admin!
+class Admin::GoogleDriveConnectionsController < Admin::ApplicationController
+  # This code is deprecated and will be cleaned up in the future. It is used to connect the admin user to Google Drive for scanning items.
 
   # Step 1: Redirect the Admin to Google to authorize Drive
   def connect
@@ -31,9 +30,6 @@ class Admin::GoogleDriveConnectionsController < ApplicationController
 
   private
 
-  def ensure_admin!
-    redirect_to root_path, alert: "Unauthorized" unless current_user&.admin?
-  end
 
   def oauth_client
     Signet::OAuth2::Client.new(

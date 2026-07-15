@@ -11,18 +11,29 @@ class User < ApplicationRecord
 
   before_create :generate_packlight_id
 
-  AI_LISTING_LIMIT = 100
+  BETA_COHORT_AI_LISTING_LIMIT = 100
+  STANDARD_AI_LISTING_LIMIT = 5
+  STANDARD_LISTING_LIMIT = 10
 
-  def admin?
-    admin == true
+  def beta_cohort?
+    beta_cohort == true
+  end
+
+  def ai_listing_limit
+    beta_cohort? ? BETA_COHORT_AI_LISTING_LIMIT : STANDARD_AI_LISTING_LIMIT
   end
 
   def ai_listing_limit_reached?
-    ai_listings_count >= AI_LISTING_LIMIT
+    ai_listings_count >= ai_listing_limit
   end
 
   def remaining_ai_listings
-    [ AI_LISTING_LIMIT - ai_listings_count, 0 ].max
+    [ ai_listing_limit - ai_listings_count, 0 ].max
+  end
+
+  def listing_limit_reached?
+    return false if beta_cohort?
+    items.count >= STANDARD_LISTING_LIMIT
   end
 
   private

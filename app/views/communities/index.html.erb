@@ -23,7 +23,7 @@
           </div>
         <% else %>
           <div class="text-center py-8 bg-white rounded-lg shadow-sm">
-            <p class="text-slate-500 text-sm">No listings match &ldquo;<%= params[:q] %>&rdquo;.</p>
+            <p class="text-slate-500 text-sm px-4">No listings match &ldquo;<%= params[:q] %>&rdquo;.</p>
           </div>
         <% end %>
       </section>
@@ -39,7 +39,7 @@
         </div>
       <% else %>
         <div class="text-center py-8 bg-white rounded-lg shadow-sm">
-          <p class="text-slate-500 text-sm">No listings yet. New items will show up here as your communities add them.</p>
+          <p class="text-slate-500 text-sm px-4">Recent items will show up here as your communities add them.</p>
         </div>
       <% end %>
     </section>
@@ -72,7 +72,7 @@
         <% end %>
       <% else %>
         <div class="text-center py-8 bg-white rounded-lg shadow-sm">
-          <p class="text-slate-500 text-sm">You haven't added any items to your watch list yet.</p>
+          <p class="text-slate-500 text-sm px-4">You haven't added any items to your watch list yet.</p>
         </div>
       <% end %>
     </section>
@@ -86,8 +86,8 @@
           <%= render partial: "user_card", collection: @users.select(&:packlight_id), as: :user %>
         </div>
       <% else %>
-        <div class="text-center py-12">
-          <p class="text-slate-600 text-lg">You have not been invited to see any Packlight collections yet.</p>
+        <div class="text-center py-8 bg-white rounded-lg shadow-sm">
+          <p class="text-slate-500 text-sm px-4">You have not been invited to see any Packlight collections yet.</p>
         </div>
       <% end %>
     </section>

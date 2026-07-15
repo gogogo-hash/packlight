@@ -14,6 +14,11 @@ class Admin::ItemsController < Admin::ApplicationController
   end
 
   def create
+    if current_user.listing_limit_reached?
+      redirect_to new_admin_item_path, alert: "You've reached the #{User::STANDARD_LISTING_LIMIT}-listing limit for beta."
+      return
+    end
+
     if params[:mode] == "manual"
       create_manual
     else
@@ -109,7 +114,7 @@ class Admin::ItemsController < Admin::ApplicationController
 
   def create_with_ai
     if current_user.ai_listing_limit_reached?
-      redirect_to new_admin_item_path, alert: "You've reached the #{User::AI_LISTING_LIMIT}-listing AI limit for beta. Use Manual Entry to add more items."
+      redirect_to new_admin_item_path, alert: "You've reached the #{current_user.ai_listing_limit}-listing AI limit for beta. Use Manual Entry to add more items."
       return
     end
 
@@ -121,11 +126,11 @@ class Admin::ItemsController < Admin::ApplicationController
     end
 
     reserved = User.where(id: current_user.id)
-      .where("ai_listings_count < ?", User::AI_LISTING_LIMIT)
+      .where("ai_listings_count < ?", current_user.ai_listing_limit)
       .update_all("ai_listings_count = ai_listings_count + 1")
 
     if reserved.zero?
-      redirect_to new_admin_item_path, alert: "You've reached the #{User::AI_LISTING_LIMIT}-listing AI limit for beta. Use Manual Entry to add more items."
+      redirect_to new_admin_item_path, alert: "You've reached the #{current_user.ai_listing_limit}-listing AI limit for beta. Use Manual Entry to add more items."
       return
     end
 
