@@ -12,7 +12,7 @@ module TurnstileProtected
 
     build_resource_for_turnstile_failure
     flash.now[:alert] = "Bot verification failed. Please try again."
-    respond_with_navigational(resource) { render :new, status: :unprocessable_entity }
+    render :new, status: :unprocessable_entity, formats: :html
   end
 
   # Devise's own #new action just does `resource_class.new` with no params.
