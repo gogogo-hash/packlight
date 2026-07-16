@@ -1,6 +1,6 @@
   <div class="w-full max-w-md p-8">
     <div class="flex justify-center mb-6">
-      <%= image_tag "logo.png", alt: "Packlight Logo", class: "h-12 w-auto" %>
+    <%= image_tag "logo.png", alt: "Packlight Logo", class: "h-48 w-auto" %>
     </div>
 
 
@@ -38,12 +38,19 @@
         <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "bg-white w-full px-4 py-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" %>
       </div>
 
+      <!-- Cloudflare Turnstile Widget -->
+      <div class="form-group verification-gate flex justify-center mt-6 py-4">
+        <%= cloudflare_turnstile_tag(appearance: 'execute') %>
+      </div>
+
       <!-- Submit Button -->
       <div class="mb-6">
         <%= f.submit "Sign up", class: "w-full bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200" %>
       </div>
     <% end %>
-
+    <div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mr-4 after:flex-1 after:border-t after:border-gray-300 after:ml-4 text-gray-500">
+      or
+    </div>
     <!-- Links Section -->
     <div class="border-t border-gray-200 pt-6">
       <%= render "devise/shared/links" %>
