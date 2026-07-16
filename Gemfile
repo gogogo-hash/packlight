@@ -55,7 +55,7 @@ gem "gemini-ai"
 
 # File Server & Email
 gem "ruby_smb"
-gem "sendgrid-actionmailer"
+gem "resend"
 
 # Google Drive API
 gem "google-apis-drive_v3"
