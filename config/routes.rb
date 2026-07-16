@@ -10,14 +10,15 @@ Rails.application.routes.draw do
   root "communities#index"
 
   resources :communities, only: [ :index ]
-  resources :items, only: [ :show ] do
-    resources :comments, only: [ :create ]
-    resources :subscriptions, only: [ :create, :destroy ]
-  end
 
   scope "/p/:packlight_id", as: "packlight" do
     get "/", to: "packlight_pages#show", as: "page"
     get "/items/:id", to: "packlight_pages#item", as: "item"
+
+    resources :items, only: [] do
+      resources :comments, only: [ :create ]
+      resource :subscription, only: [ :create, :destroy ]
+    end
   end
 
   namespace :admin do

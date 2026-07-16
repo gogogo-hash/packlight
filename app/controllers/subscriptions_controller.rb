@@ -1,5 +1,9 @@
 class SubscriptionsController < ApplicationController
+  include PacklightAuthorization
+
   before_action :authenticate_user!
+  before_action :set_packlight_admin
+  before_action :authorize_packlight_viewer!
   before_action :set_subscribable
 
   def create
@@ -23,12 +27,10 @@ class SubscriptionsController < ApplicationController
   private
 
   def set_subscribable
-    if params[:item_id]
-      @subscribable = Item.find(params[:item_id])
-    end
+    @subscribable = @admin.items.find(params[:item_id])
   end
 
   def subscribable_path
-    packlight_item_path(packlight_id: @subscribable.admin.packlight_id, id: @subscribable.id)
+    packlight_item_path(packlight_id: @admin.packlight_id, id: @subscribable.id)
   end
 end

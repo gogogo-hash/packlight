@@ -66,13 +66,13 @@
           <div>
             <% if @subscribed %>
               <%= button_to "Unwatch Item",
-                    item_subscription_path(@item),
+                    packlight_item_subscription_path(packlight_id: @admin.packlight_id, item_id: @item.id),
                     method: :delete,
                     class: "w-full bg-slate-300 text-slate-800 font-semibold py-2 px-4 rounded hover:bg-slate-400" %>
             <% else %>
               <%= button_to "Watch Item",
-                    item_subscriptions_path(@item),
-                    method: :create,
+                    packlight_item_subscription_path(packlight_id: @admin.packlight_id, item_id: @item.id),
+                    method: :post,
                     class: "w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700" %>
             <% end %>
 
@@ -88,7 +88,7 @@
 
       <!-- Add Comment Form -->
       <div class="bg-white rounded-lg shadow p-6 mb-8">
-        <%= form_with model: [@item, Comment.new], local: true do |f| %>
+        <%= form_with model: Comment.new, url: packlight_item_comments_path(packlight_id: @admin.packlight_id, item_id: @item.id), local: true do |f| %>
           <div class="mb-4">
             <%= f.label :content, "Your Comment", class: "block text-sm font-medium text-slate-700 mb-2" %>
             <%= f.text_area :content, rows: 4,
