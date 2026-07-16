@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :lockable, :timeoutable,
+         :lockable, :timeoutable, :confirmable,
          :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
   has_many :items, foreign_key: :admin_id, dependent: :restrict_with_error
@@ -49,6 +49,9 @@ class User < ApplicationRecord
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
         user.email = auth.info.email
         user.password = Devise.friendly_token[0, 20]
+        # Google has already verified this email address, so there's no
+        # confirmation email step for OAuth sign-ups.
+        user.skip_confirmation!
       end.tap do |user|
         user.google_token = auth.credentials.token
         if auth.credentials.refresh_token.present?
