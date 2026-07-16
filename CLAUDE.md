@@ -74,6 +74,6 @@ Devise with `devise_invitable`. Users can only register via invite link. Google 
 | `GCP_PROJECT_ID` | Vertex AI project for Gemini |
 | `GOOGLE_CREDENTIALS_JSON` | Service account JSON (overrides the file at repo root) |
 | `ANTHROPIC_API_KEY` | Claude API (wired up, not yet used in the pipeline) |
-| `SENDGRID_API_KEY` | Transactional email |
+| `RESEND_API_KEY` | Transactional email (Resend) |
 
 The file `gen-lang-client-0677189465-4e8a9ac5b341.json` at the repo root is the fallback Google service account key used by `ProcessItemJob` when `GOOGLE_CREDENTIALS_JSON` is not set.

@@ -30,10 +30,9 @@ SMB_HOST=\\server\items
 SMB_USERNAME=your_username
 SMB_PASSWORD=your_password
 
-# Email (get from SendGrid)
-SENDGRID_API_KEY=SG.xxxxxx
-SENDGRID_USERNAME=apikey
-MAIL_FROM=noreply@yourdomain.com
+# Email (get from Resend)
+RESEND_API_KEY=re_xxxxxx
+MAIL_FROM=onboarding@resend.dev
 
 # Claude API
 ANTHROPIC_API_KEY=sk-ant-xxxxxx
@@ -102,12 +101,12 @@ In development, emails are logged to the console by default. To see them:
 # Watch the Rails console for email output
 ```
 
-To test email delivery with SendGrid in development, add to `.env`:
+To test real email delivery with Resend in development, add to `.env`:
 ```
-SENDGRID_API_KEY=your_real_api_key
+RESEND_API_KEY=your_real_api_key
 ```
 
-Then uncomment the SMTP settings in `config/environments/development.rb` and set `delivery_method = :smtp`.
+Then set `config.action_mailer.delivery_method = :resend` in `config/environments/development.rb` (it defaults to `:test`, which only logs to the console).
 
 ## Database Migrations
 
@@ -168,7 +167,7 @@ packlight/
 ## Next Steps
 
 1. Configure your SMB share credentials in `.env`
-2. Set up SendGrid account and add API key
+2. Set up Resend account and add API key
 3. Get Anthropic API key at https://console.anthropic.com
 4. Create your first admin user
 5. Test the file scan with some sample images
@@ -189,7 +188,7 @@ docker run --name packlight-postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 
 - Check rbenv/asdf setup: `which ruby`
 
 **Emails not sending?**
-- Check `.env` for SENDGRID_API_KEY
+- Check `.env` for RESEND_API_KEY
 - Check console for errors: `tail -f log/development.log`
 - In development, emails are logged, not sent by default
 
