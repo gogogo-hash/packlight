@@ -1,6 +1,8 @@
 <tr id="<%= dom_id(item) %>" class="border-b hover:bg-slate-50">
   <td class="px-6 py-4 text-slate-800 font-medium">
-    <%= link_to item.file_folder_path[item.file_folder_path.rindex('/')..-1], item_path(item),
+    <% display_name = item.name.presence || item.file_folder_path&.split("/")&.last || "Untitled" %>
+    <%= link_to display_name,
+    packlight_item_path(packlight_id: item.admin.packlight_id, id: item.id),
     class: "text-slate-800 font-semibold hover:text-indigo-600 transition-colors duration-150", data: { turbo: false } %>
   </td>
   <td class="px-6 py-4">
@@ -11,15 +13,10 @@
         <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">Pending</span>
       <% when "error" %>
         <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800">Error</span>
+      <% when "sold" %>
+        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-slate-200 text-slate-700">Sold</span>
       <% else %>
         <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-slate-100 text-slate-800">Unknown</span>
-    <% end %>
-  </td>
-  <td class="hidden md:table-cell px-6 py-4 text-slate-600">
-    <% if item.last_scanned_at %>
-      <%= time_ago_in_words(item.last_scanned_at) %> ago
-    <% else %>
-      Never
     <% end %>
   </td>
   <td class="px-6 py-4 text-slate-800">
@@ -29,10 +26,23 @@
       —
     <% end %>
   </td>
-  <td class="px-6 py-4 text-sm font-medium">
+  <td class="px-6 py-4 text-sm font-medium space-x-3 whitespace-nowrap">
     <%= link_to "Edit",
       edit_admin_item_path(item),
       data: { turbo_frame: "modal" },
       class: "text-indigo-600 hover:text-indigo-900 font-semibold" %>
+    <% unless item.status == "sold" %>
+      <%= button_to "Mark Sold",
+        mark_sold_admin_item_path(item),
+        method: :patch,
+        form_class: "inline-block",
+        class: "text-emerald-600 hover:text-emerald-900 font-semibold cursor-pointer" %>
+    <% end %>
+    <%= button_to "Delete",
+      admin_item_path(item),
+      method: :delete,
+      form_class: "inline-block",
+      data: { turbo_confirm: "Delete this item? This cannot be undone." },
+      class: "text-red-600 hover:text-red-900 font-semibold cursor-pointer" %>
   </td>
 </tr>

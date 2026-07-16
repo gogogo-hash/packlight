@@ -1,0 +1,29 @@
+<div id="packlight_accesses_list" class="bg-white rounded-sm shadow overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-200">
+    <h3 class="text-lg font-semibold text-slate-800">Invited Members</h3>
+  </div>
+
+  <% if packlight_accesses.any? %>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-slate-50 border-b">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Email</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Invited</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Status</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% packlight_accesses.each do |packlight_access| %>
+            <%= render "admin/packlight_accesses/packlight_access_row", packlight_access: packlight_access %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="px-6 py-12 text-center text-slate-500">
+      No one invited yet. Add an email above to give someone access to your page.
+    </div>
+  <% end %>
+</div>

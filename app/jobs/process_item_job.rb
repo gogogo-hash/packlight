@@ -11,7 +11,7 @@ class ProcessItemJob < ApplicationJob
       return if photos.empty?
 
       if ENV["GOOGLE_CREDENTIALS_JSON"].present?
-              key_file = Tempfile.new(["google-key", ".json"])
+              key_file = Tempfile.new([ "google-key", ".json" ])
               key_file.write(ENV["GOOGLE_CREDENTIALS_JSON"])
               key_file.rewind
               credentials_path = key_file.path

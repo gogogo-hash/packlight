@@ -25,17 +25,17 @@
 
 
   <!-- Sticky Header -->
-    <%- if controller_name != 'sessions' && controller_name != 'registrations' %>
+    <%- if controller_name != 'sessions' && controller_name != 'registrations' && controller_name != 'confirmations' %>
       <header id="site-header" data-controller="menu" class="fixed top-0 inset-x-0 z-50 h-12 bg-[#FAFAF9] shadow">
         <nav class="max-w-7xl mx-auto h-full px-4 flex justify-between items-center">
           <%= image_tag "logo.png", alt: "Packlight Logo", class: "h-24 w-auto mt-2" %>
                 <span class="text-sm text-slate-600 truncate">Hello, <%= current_user.email %></span>
           <div class="hidden md:flex items-center gap-4">
-            <% if current_user.admin? %>
-              <%= link_to "Admin Panel", 
-              admin_items_path, 
+            <%= link_to "My Listings",
+              admin_items_path,
               class: "text-sm text-white px-2 py-2 rounded bg-[#0E4450] hover:bg-[#646C5E]" %>
-            <% end %>
+            <%= link_to "Home", root_path, class: "text-sm text-white px-2 py-2 rounded bg-[#0E4450] hover:bg-[#646C5E]" %>
+
             <%= button_to "Sign Out",
               destroy_user_session_path,
               method: :delete,
@@ -53,9 +53,9 @@
 <!-- MOBILE DRAWER DROPDOWN (Hidden by default, slides out panel below header) -->
     <div data-menu-target="drawer" class="hidden absolute top-12 left-0 w-full bg-[#FAFAF9] border-b border-slate-200 shadow-md md:hidden flex flex-col p-4 gap-4">
           
-      <% if current_user.admin? %>
-        <%= link_to "Admin Panel", admin_items_path, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>
-      <% end %>
+      <%= link_to "My Listings", admin_items_path, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>
+      <%= link_to "Home", root_path, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>
+
       <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-sm text-center text-white w-full py-2.5 rounded bg-[#0E4450]" %>        
     </div>
 
@@ -66,6 +66,16 @@
 
 
   <body class="bg-[#F5F3F0]">
+    <% if flash[:notice].present? %>
+      <div class="max-w-2xl mx-auto mt-4 px-4">
+        <div class="bg-green-50 border border-green-200 text-green-800 text-sm rounded-lg p-4"><%= flash[:notice] %></div>
+      </div>
+    <% end %>
+    <% if flash[:alert].present? %>
+      <div class="max-w-2xl mx-auto mt-4 px-4">
+        <div class="bg-red-50 border border-red-200 text-red-800 text-sm rounded-lg p-4"><%= flash[:alert] %></div>
+      </div>
+    <% end %>
     <main class="container mx-auto justify-center pt-12 flex">
       <%= yield %>
     </main>

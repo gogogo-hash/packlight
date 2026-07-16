@@ -16,7 +16,7 @@ module FileSourceAdapters
           return [] unless @target_folder_id.present?
           items = []
           existing_photos = Set.new(
-            Item.joins(:photos).pluck("items.file_folder_path", "photos.file_name").map { |f, p| File.join(f, p) }
+            @user.items.joins(:photos).pluck("items.file_folder_path", "photos.file_name").map { |f, p| File.join(f, p) }
           )
 
           subfolders_query = "'#{@target_folder_id}' in parents and " \

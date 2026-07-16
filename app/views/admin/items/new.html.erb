@@ -1,0 +1,105 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden transform transition-all border border-slate-200">
+
+      <div class="px-6 py-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+        <h3 class="text-lg font-bold text-slate-800">Create Item</h3>
+        <%= link_to "×", admin_items_path, data: { turbo_frame: "_top" }, class: "text-slate-400 hover:text-slate-600 text-2xl font-semibold leading-none" %>
+      </div>
+
+      <div class="flex border-b border-slate-100 px-6 pt-4">
+        <%= link_to "AI Assisted", new_admin_item_path,
+              data: { turbo_frame: "modal" },
+              class: "px-3 pb-2 text-sm font-semibold border-b-2 #{@mode == 'ai' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-700'}" %>
+        <%= link_to "Manual Entry", new_admin_item_path(mode: "manual"),
+              data: { turbo_frame: "modal" },
+              class: "px-3 pb-2 text-sm font-semibold border-b-2 #{@mode == 'manual' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-700'}" %>
+      </div>
+
+      <% if current_user.listing_limit_reached? %>
+        <div class="p-6 space-y-4">
+          <p class="text-sm text-slate-600">
+            You've reached the <%= User::STANDARD_LISTING_LIMIT %>-listing limit for beta.
+          </p>
+          <div class="flex justify-end pt-4 border-t border-slate-100 mt-6">
+            <%= link_to "Close", admin_items_path, data: { turbo_frame: "_top" }, class: "px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-sm transition-colors" %>
+          </div>
+        </div>
+      <% elsif @mode == "manual" %>
+        <%= form_with(model: @item, url: admin_items_path, method: :post, multipart: true, data: { turbo: true }, class: "p-6 space-y-4") do |f| %>
+          <%= hidden_field_tag :mode, "manual" %>
+
+          <div>
+            <%= label_tag :photos, "Photos (up to 6)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+            <%= file_field_tag "photos[]", multiple: true, accept: "image/*",
+                  onchange: "if (this.files.length > 6) { alert('You can upload up to 6 photos per listing.'); this.value = ''; }",
+                  class: "block w-full text-slate-800 border border-slate-300 rounded-md px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none" %>
+          </div>
+
+          <div>
+            <%= f.label :name, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+            <%= f.text_field :name, required: true,
+                  class: "block w-full rounded-md border-slate-300 px-3 py-2 text-slate-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border" %>
+          </div>
+
+          <div>
+            <%= f.label :description, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+            <%= f.text_area :description, rows: 3,
+                  class: "block w-full rounded-md border-slate-300 px-3 py-2 text-slate-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border", placeholder: "Add description..." %>
+          </div>
+
+          <div>
+            <%= f.label :price, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+            <div class="relative rounded-md shadow-sm">
+              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <span class="text-slate-500 sm:text-sm">$</span>
+              </div>
+              <%= f.number_field :price, step: 0.01, required: true,
+                    class: "block w-full rounded-md border-slate-300 pl-7 pr-3 py-2 text-slate-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border", placeholder: "0.00" %>
+            </div>
+          </div>
+
+          <div>
+            <%= f.label :status, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+            <%= f.select :status, [ [ "Processed", "processed" ], [ "Pending", "pending" ], [ "Sold", "sold" ] ], { selected: "processed" },
+                  class: "block w-full rounded-md border-slate-300 px-3 py-2 text-slate-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border" %>
+          </div>
+
+          <div class="flex justify-end space-x-3 pt-4 border-t border-slate-100 mt-6">
+            <%= link_to "Cancel", admin_items_path, data: { turbo_frame: "_top" }, class: "px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-sm transition-colors" %>
+            <%= f.submit "Create Item", class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm transition-colors cursor-pointer" %>
+          </div>
+        <% end %>
+      <% elsif current_user.ai_listing_limit_reached? %>
+        <div class="p-6 space-y-4">
+          <p class="text-sm text-slate-600">
+            You've reached the <%= current_user.ai_listing_limit %>-listing AI limit for beta.
+            Use <%= link_to "Manual Entry", new_admin_item_path(mode: "manual"), data: { turbo_frame: "modal" }, class: "text-indigo-600 hover:text-indigo-900 font-semibold" %> to add more items.
+          </p>
+          <div class="flex justify-end pt-4 border-t border-slate-100 mt-6">
+            <%= link_to "Close", admin_items_path, data: { turbo_frame: "_top" }, class: "px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-sm transition-colors" %>
+          </div>
+        </div>
+      <% else %>
+        <%= form_with(model: @item, url: admin_items_path, method: :post, multipart: true, data: { turbo: true }, class: "p-6 space-y-4") do |f| %>
+
+          <div>
+            <%= label_tag :photos, "Photos (up to 6)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+            <%= file_field_tag "photos[]", multiple: true, accept: "image/*",
+                  onchange: "if (this.files.length > 6) { alert('You can upload up to 6 photos per listing.'); this.value = ''; }",
+                  class: "block w-full text-slate-800 border border-slate-300 rounded-md px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none" %>
+            <p class="mt-1 text-xs text-slate-500"><%= current_user.remaining_ai_listings %> of <%= current_user.ai_listing_limit %> AI-assisted listings remaining</p>
+          </div>
+
+          <div class="flex justify-end space-x-3 pt-4 border-t border-slate-100 mt-6">
+            <%= link_to "Cancel", admin_items_path, data: { turbo_frame: "_top" }, class: "px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-sm transition-colors" %>
+            <%= f.submit "Upload & Process with AI", class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm transition-colors cursor-pointer" %>
+          </div>
+
+        <% end %>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>

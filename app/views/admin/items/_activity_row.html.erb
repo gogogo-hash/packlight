@@ -1,0 +1,14 @@
+<div id="activity_<%= dom_id(item) %>" class="flex items-center justify-between px-6 py-4 border-b last:border-b-0">
+  <div>
+    <% display_name = item.name.presence || item.file_folder_path&.split("/")&.last || "Untitled" %>
+    <%= link_to display_name,
+      packlight_item_path(packlight_id: item.admin.packlight_id, id: item.id),
+      class: "text-slate-800 font-semibold hover:text-indigo-600 transition-colors duration-150", data: { turbo: false } %>
+    <span class="ml-2 inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">New comment</span>
+  </div>
+  <%= button_to "Mark Reviewed",
+    mark_reviewed_admin_item_path(item),
+    method: :patch,
+    form_class: "inline-block",
+    class: "text-indigo-600 hover:text-indigo-900 font-semibold text-sm cursor-pointer" %>
+</div>

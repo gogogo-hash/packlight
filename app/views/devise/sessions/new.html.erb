@@ -30,6 +30,11 @@
 
 
 
+      <!-- Cloudflare Turnstile Widget -->
+      <div class="form-group verification-gate flex justify-center mt-6 py-4">
+        <%= cloudflare_turnstile_tag(appearance: 'execute') %>
+      </div>
+
       <!-- Submit Button -->
       <div class="mb-6">
         <%= f.submit "Log in", class: "w-full bg-[#0E4450] hover:bg-[#646C5E] text-white font-semibold py-2 px-4 rounded-sm transition duration-200" %>

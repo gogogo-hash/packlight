@@ -8,6 +8,10 @@
     <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
   </div>
 
+  <div class="form-group verification-gate">
+    <%= cloudflare_turnstile_tag(appearance: 'execute') %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Resend unlock instructions" %>
   </div>

@@ -42,6 +42,9 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
+# Pagination
+gem "pagy", "~> 6.0"
+
 # Authentication and Authorization
 gem "devise"
 gem "devise_invitable"
@@ -52,7 +55,7 @@ gem "gemini-ai"
 
 # File Server & Email
 gem "ruby_smb"
-gem "sendgrid-actionmailer"
+gem "resend"
 
 # Google Drive API
 gem "google-apis-drive_v3"

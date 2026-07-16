@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_15_220756) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,7 +24,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "item_reviews", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "item_id", null: false
+    t.datetime "last_checked_at"
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_reviews_on_item_id", unique: true
+  end
+
   create_table "items", force: :cascade do |t|
+    t.bigint "admin_id"
     t.datetime "created_at", null: false
     t.text "description"
     t.string "file_folder_path"
@@ -34,6 +43,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
     t.string "status"
     t.binary "thumbnail"
     t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_items_on_admin_id"
+  end
+
+  create_table "packlight_accesses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.string "packlight_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email", "packlight_id"], name: "index_packlight_accesses_on_email_and_packlight_id", unique: true
   end
 
   create_table "photos", force: :cascade do |t|
@@ -174,11 +192,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable"
+    t.index ["user_id", "subscribable_type", "subscribable_id"], name: "index_subscriptions_on_user_and_subscribable", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.boolean "admin"
+    t.integer "ai_listings_count", default: 0, null: false
+    t.boolean "beta_cohort"
+    t.datetime "confirmation_sent_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -198,18 +221,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
     t.bigint "invited_by_id"
     t.string "invited_by_type"
     t.datetime "locked_at"
+    t.string "packlight_id"
     t.string "provider"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.string "target_google_folder_id"
     t.string "uid"
+    t.string "unconfirmed_email"
     t.string "unlock_token"
     t.datetime "updated_at", null: false
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
+    t.index ["packlight_id"], name: "index_users_on_packlight_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -222,6 +249,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_205950) do
 
   add_foreign_key "comments", "items"
   add_foreign_key "comments", "users"
+  add_foreign_key "item_reviews", "items"
+  add_foreign_key "items", "users", column: "admin_id"
   add_foreign_key "photos", "items"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

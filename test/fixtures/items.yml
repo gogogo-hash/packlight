@@ -5,13 +5,15 @@ one:
   description: MyText
   price: 9.99
   file_folder_path: MyString
-  status: MyString
+  status: processed
   last_scanned_at: 2026-05-18 23:43:04
+  admin: admin_one
 
 two:
   name: MyString
   description: MyText
   price: 9.99
-  file_folder_path: MyString
-  status: MyString
+  file_folder_path: MyString2
+  status: processed
   last_scanned_at: 2026-05-18 23:43:04
+  admin: admin_one
