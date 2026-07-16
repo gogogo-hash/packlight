@@ -6,4 +6,4 @@ Rails.application.config.action_mailer.default_url_options = {
   protocol: ENV.fetch("RAILS_PROTOCOL", "http")
 }
 
-Rails.application.config.action_mailer.default_options = { from: ENV.fetch("MAIL_FROM", "onboarding@resend.dev") }
+Rails.application.config.action_mailer.default_options = { from: ENV.fetch("MAIL_FROM", "noreply@packlight.community") }

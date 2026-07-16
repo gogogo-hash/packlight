@@ -32,7 +32,7 @@ SMB_PASSWORD=your_password
 
 # Email (get from Resend)
 RESEND_API_KEY=re_xxxxxx
-MAIL_FROM=onboarding@resend.dev
+MAIL_FROM=noreply@packlight.community
 
 # Claude API
 ANTHROPIC_API_KEY=sk-ant-xxxxxx
