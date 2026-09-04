@@ -37,6 +37,12 @@
           <%= link_to packlight_page_url(packlight_id: current_user.packlight_id), packlight_page_url(packlight_id: current_user.packlight_id), class: "text-indigo-600 hover:text-indigo-900 font-semibold" %>
         </p>
 
+        <div class="mb-4">
+          <%= turbo_frame_tag "packlight_public_toggle" do %>
+            <%= render "admin/packlight_settings/toggle" %>
+          <% end %>
+        </div>
+
         <%= render "admin/packlight_accesses/message", message: nil, message_type: nil %>
         <%= render "admin/packlight_accesses/list", packlight_accesses: @packlight_accesses %>
       </div>

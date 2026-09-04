@@ -6,6 +6,10 @@ class CommunitiesController < ApplicationController
 
     @users = User.where(packlight_id: accessible_packlight_ids).order(created_at: :asc)
 
+    @public_users = User.where(packlight_public: true)
+                         .where.not(packlight_id: accessible_packlight_ids + [ current_user.packlight_id ])
+                         .order(created_at: :asc)
+
     @recent_items = Item.includes(:admin)
                          .joins(:admin)
                          .where(users: { packlight_id: accessible_packlight_ids }, status: "processed")

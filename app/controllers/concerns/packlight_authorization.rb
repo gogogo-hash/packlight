@@ -11,6 +11,7 @@ module PacklightAuthorization
 
   def authorize_packlight_viewer!
     return if current_user == @admin
+    return if @admin.packlight_public?
     return if PacklightAccess.exists?(email: current_user.email.to_s.strip.downcase, packlight_id: @admin.packlight_id)
 
     render_packlight_not_found

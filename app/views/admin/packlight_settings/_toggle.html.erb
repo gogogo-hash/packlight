@@ -1,0 +1,7 @@
+<%= form_with model: current_user, url: admin_packlight_settings_path, method: :patch do |f| %>
+  <label class="flex items-center gap-2 cursor-pointer">
+    <%= f.check_box :packlight_public, onchange: "this.form.requestSubmit()",
+          class: "h-4 w-4 rounded border-slate-300 text-[#0E4450] focus:ring-[#0E4450]" %>
+    <span class="text-sm text-slate-700">Make my packlight page public to all Packlight members</span>
+  </label>
+<% end %>

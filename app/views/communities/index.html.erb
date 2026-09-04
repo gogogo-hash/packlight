@@ -92,5 +92,20 @@
       <% end %>
     </section>
 
+    <!-- Public Communities -->
+    <section class="mt-12">
+      <h2 class="text-[32px] font-semibold text-slate-800 mb-4">Public Communities</h2>
+
+      <% if @public_users.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <%= render partial: "user_card", collection: @public_users.select(&:packlight_id), as: :user %>
+        </div>
+      <% else %>
+        <div class="text-center py-8 bg-white rounded-lg shadow-sm">
+          <p class="text-slate-500 text-sm px-4">No public Packlight collections yet.</p>
+        </div>
+      <% end %>
+    </section>
+
   </div>
 </div>

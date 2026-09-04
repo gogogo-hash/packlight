@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       end
     end
     resources :packlight_accesses, only: [ :create, :destroy ]
+    resource :packlight_settings, only: [ :update ]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
