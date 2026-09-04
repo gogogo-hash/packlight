@@ -31,6 +31,15 @@ class PacklightPagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "uninvited user can view a public page" do
+    @admin_one.update!(packlight_public: true)
+    sign_in @admin_two
+
+    get packlight_page_path(packlight_id: @admin_one.packlight_id)
+
+    assert_response :success
+  end
+
   test "authenticated but uninvited user is denied access to an item" do
     sign_in @admin_two
 

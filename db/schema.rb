@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_220756) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_04_051234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -222,6 +222,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_220756) do
     t.string "invited_by_type"
     t.datetime "locked_at"
     t.string "packlight_id"
+    t.boolean "packlight_public", default: false, null: false
     t.string "provider"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
@@ -237,6 +238,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_220756) do
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["packlight_id"], name: "index_users_on_packlight_id", unique: true
+    t.index ["packlight_public"], name: "index_users_on_packlight_public"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
